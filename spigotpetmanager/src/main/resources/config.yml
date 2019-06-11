@@ -1,0 +1,12 @@
+# MySQL settings
+# MySql settings
+sql:
+  host: 'localhost'
+  port: '3306'
+  user: 'minecraft'
+  password: 'p@$$word'
+  database: 'dbname'
+  prefix: "&f[&bSQL&f] "
+pets:
+  prefix: "&9[&6PetManager&9] "
+version: 9

@@ -1,1 +1,5 @@
-version: @plugin.version@
+name: @NAME@
+version: @VERSION@
+api-version: 1.14
+main: me.magnum.breedablepets.Main
+author: Magnum1997
