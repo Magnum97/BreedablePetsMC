@@ -36,7 +36,7 @@ public class BreedListener implements Listener {
 		// List<Entity> nearby = one.getNearbyEntities(2, 2, 2);
 		// nearby.forEach(entity -> {
 		// 	if (entity.getType().equals(one.getType())){
-		// 		one.getWorld().dropItemNaturally(one.getLocation(), items.egg.clone());
+		// 		one.getWorld().dropItemNaturally(one.getLocation(), items.regEgg.clone());
 		// 	}
 		// });
 	}

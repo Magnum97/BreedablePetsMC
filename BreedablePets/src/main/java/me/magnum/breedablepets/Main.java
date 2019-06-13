@@ -14,10 +14,8 @@ import org.mineacademy.remain.Remain;
 public class Main extends JavaPlugin {
 	
 	
-	public Main plugin;
-	
-	public SimpleConfig cfg;
-	private BukkitCommandManager commandManager;
+	public static Main plugin;
+	public static SimpleConfig cfg;
 	
 	@Override
 	public void onEnable () {
@@ -25,13 +23,13 @@ public class Main extends JavaPlugin {
 		cfg = new SimpleConfig("config.yml", plugin);
 		Remain.setPlugin(plugin);
 		Common.setInstance(plugin);
-		Common.log("Loading breedable pets...");
+		Common.log("Loading breed-able pets...");
 		plugin.getServer().getPluginManager().registerEvents(new MyListener(), plugin);
 		registerCommands();
 	}
 	
 	private void registerCommands () {
-		commandManager = new BukkitCommandManager(plugin);
+		BukkitCommandManager commandManager = new BukkitCommandManager(plugin);
 		commandManager.registerCommand(new me.magnum.breedablepets.Command());
 	}
 	
@@ -39,8 +37,10 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable () {
 		Common.setInstance(plugin);
-		Remain.setPlugin(null);
 		Common.log("Disabling Breedable pets.");
+		Remain.setPlugin(null);
+		cfg = null;
+		plugin = null;
 	}
 	
 	public Main getPlugin () {
