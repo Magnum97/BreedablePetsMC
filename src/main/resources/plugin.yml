@@ -1,0 +1,5 @@
+name: @NAME@
+main: @MAIN@
+version: @VERSION@
+api-version: 1.14
+author: Magnum1997
