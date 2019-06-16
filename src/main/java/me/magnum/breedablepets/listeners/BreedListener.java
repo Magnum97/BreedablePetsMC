@@ -3,6 +3,7 @@ package me.magnum.breedablepets.listeners;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.lib.Common;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,17 +17,14 @@ public class BreedListener implements Listener {
 	public BreedListener () {
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onFeed (PlayerInteractEntityEvent e) {
-		if (e.isCancelled()) {
+		if (!e.getRightClicked().getType().equals(EntityType.PARROT)) {
 			return;
 		}
-		// if (!e.getRightClicked().getType().equals(EntityType.PARROT)) {
-		// 	return;
-		// }
-		// if (!e.getPlayer().getInventory().getItemInMainHand().equals(items.birdFood())){
-		// 	return;
-		// }
+		if (!e.getPlayer().getInventory().getItemInMainHand().equals(items.birdFood())) {
+			return;
+		}
 		Player player = e.getPlayer();
 		Entity target = e.getRightClicked();
 		String type = target.getType().toString().toLowerCase();
