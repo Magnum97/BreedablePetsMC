@@ -2,8 +2,10 @@ package me.magnum.breedablepets.listeners;
 
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
+import me.magnum.lib.Common;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 
@@ -12,16 +14,19 @@ public class MyListener implements Listener {
 	private ItemUtil itemsAPI = new ItemUtil();
 	private SpawnPets spawner = new SpawnPets();
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onEggThrow (PlayerEggThrowEvent e) {
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.regEgg)) {
-			if (e.isHatching()) {
-				e.setHatchingType(EntityType.PARROT);
-			}
+			e.setHatchingType(EntityType.PARROT);
+			e.setNumHatches((byte) 1);
+			Common.sendABar(e.getPlayer(), "I really hope it hatches...");
 		}
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.fertileEgg)) {
 			e.setHatching(true);
+			e.setNumHatches((byte) 1);
+			Common.sendABar(e.getPlayer(), "You try hatching the Parrot egg...");
 			e.setHatchingType(EntityType.PARROT);
+			
 		}
 		
 	}

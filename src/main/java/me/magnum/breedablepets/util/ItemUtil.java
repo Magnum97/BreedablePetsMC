@@ -20,11 +20,17 @@ public class ItemUtil {
 		ItemStack egg;
 		if (fertile) {
 			egg = new ItemBuilder(Material.EGG)
-					.setName("§eFertile Parrot Egg").toItemStack();
+					.setName("§eFertile Parrot Egg")
+					.addLoreLine("I think it moved!")
+					.addLoreLine("I bet it is ready to hatch!")
+					.toItemStack();
 		}
 		else {
 			egg = new ItemBuilder(Material.EGG)
-					.setName("§aParrot Egg").toItemStack();
+					.setName("§aParrot Egg")
+					.addLoreLine("We don't know how it got here,")
+					.addLoreLine("but it might hatch a parrot!")
+					.toItemStack();
 		}
 		return egg;
 	}
