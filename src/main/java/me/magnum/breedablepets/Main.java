@@ -1,6 +1,7 @@
 package me.magnum.breedablepets;
 
 import co.aikar.commands.BukkitCommandManager;
+import me.magnum.breedablepets.listeners.BreedListener;
 import me.magnum.breedablepets.listeners.MyListener;
 import me.magnum.lib.Common;
 import me.magnum.lib.SimpleConfig;
@@ -25,6 +26,7 @@ public class Main extends JavaPlugin {
 		Common.setInstance(plugin);
 		Common.log("Loading breed-able pets...");
 		plugin.getServer().getPluginManager().registerEvents(new MyListener(), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), plugin);
 		registerCommands();
 	}
 	

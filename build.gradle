@@ -33,15 +33,19 @@ compileJava {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly "org.spigotmc:spigot-api:1.14.2-R0.1-SNAPSHOT"
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compileOnly "org.spigotmc:spigot-api:1.14.3-R0.1-SNAPSHOT"
+    implementation 'fr.mrmicky:FastParticles:1.2.0'
 
-    compileOnly "org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT"
     compile "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
     implementation 'me.magnum.lib:CommonLibrary:1.0.3-SNAPSHOT'
     implementation 'com.github.kangarko:Remain:3.2.0'
 }
+//<groupId>fr.mrmicky</groupId>
+//            <artifactId>FastParticles</artifactId>
+//        <version>1.2.0</version>
+//            <scope>compile</scope>
 
 /* This will replace '@VERSION@' in the plugin.yml with the version declared above, just put '@VERSION@' for the version in the plugin.yml */
 processResources {
@@ -52,6 +56,7 @@ processResources {
     ]
 }
 shadowJar {
+    archiveClassifier.set("dev")
     relocate 'co.aikar.commands', 'me.magnum.breedablepets.acf'
 }
 
