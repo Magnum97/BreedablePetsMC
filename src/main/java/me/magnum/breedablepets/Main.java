@@ -22,7 +22,8 @@ public class Main extends JavaPlugin {
 	public void onEnable () {
 		plugin = this;
 		cfg = new SimpleConfig("config.yml", plugin);
-		Remain.setPlugin(plugin);
+		Config.init();
+		// Remain.setPlugin(plugin);  //todo Add compatability
 		Common.setInstance(plugin);
 		Common.log("Loading breed-able pets...");
 		plugin.getServer().getPluginManager().registerEvents(new MyListener(), plugin);
@@ -40,7 +41,7 @@ public class Main extends JavaPlugin {
 	public void onDisable () {
 		Common.setInstance(plugin);
 		Common.log("Disabling Breedable pets.");
-		Remain.setPlugin(null);
+		// Remain.setPlugin(null);
 		cfg = null;
 		plugin = null;
 	}
