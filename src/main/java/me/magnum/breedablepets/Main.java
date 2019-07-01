@@ -3,13 +3,13 @@ package me.magnum.breedablepets;
 import co.aikar.commands.BukkitCommandManager;
 import me.magnum.breedablepets.listeners.BreedListener;
 import me.magnum.breedablepets.listeners.MyListener;
+import me.magnum.breedablepets.util.Config;
 import me.magnum.lib.Common;
 import me.magnum.lib.SimpleConfig;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mineacademy.remain.Remain;
 
 
 public class Main extends JavaPlugin {

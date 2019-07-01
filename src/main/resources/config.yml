@@ -1,2 +1,8 @@
 egg-chance: 70
 fertile-chance: 30
+modifier:
+  wheat: 10
+  beetroot: 20
+  pumpkin: 30
+  melon: 30
+  glistering: 100
