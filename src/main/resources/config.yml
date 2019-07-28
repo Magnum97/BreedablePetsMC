@@ -1,8 +1,29 @@
-egg-chance: 70
+# Config for @NAME@ version @VERSION@
+version: @VERSION@
+# base chance that feeding a _tamed_ parrot will produce an egg.
+egg-chance: 10
+# chance that feeding with a mate nearby produces an egg
+paired-egg-chance: 20
+# chance that a mated pair will produce a fertile egg
 fertile-chance: 30
+# Chance of a parrot egg hatching
+hatch-chance: 10
+# chance modifiers increase chance of eggs depending on what food you use
+# modifier of 0 does not change base chance
+
+# This is for future version todo Add food modifiers
 modifier:
   wheat: 10
   beetroot: 20
   pumpkin: 30
   melon: 30
   glistering: 100
+# Options for parrots hatched from eggs
+# Custom name for hatches
+hatches:
+  # Will hatched parrots have a custom name?
+  named: true
+    # Custom name of hatchling
+    name: "&Bhatchling"
+  # True = hatchlings are tamed by player. False = parrot is wild & tameable
+  tamed: true

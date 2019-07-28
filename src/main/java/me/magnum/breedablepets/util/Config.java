@@ -9,6 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class Config extends SimpleConfig {
 	
+	public static String version;
+	public static int eggChance;
+	public static int pairedChance;
+	public static int hatchChance;
+	public static int fertileChance;
+	public static boolean nameHatchling;
+	public static String hatchLingName;
+	public static boolean tamedHatchling;
 	
 	private Config (String fileName, JavaPlugin plugin) {
 		super(fileName, plugin);
@@ -25,6 +33,14 @@ public class Config extends SimpleConfig {
 	
 	private void onLoad () {
 		Common.setInstance(Main.plugin);
+		version = getString("version");
+		eggChance = getInt("egg-chance");
+		pairedChance = getInt("paired-chance");
+		fertileChance = getInt("fertile-chance");
+		nameHatchling = getBoolean("hatches.named");
+		hatchLingName = getString("hatches.named.name");
+		tamedHatchling = getBoolean("hatches.tamed");
+		
 	}
 	
 	public static void init () {

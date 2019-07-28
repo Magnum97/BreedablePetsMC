@@ -17,7 +17,7 @@ import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BreedListener implements Listener {
 	
@@ -45,11 +45,11 @@ public class BreedListener implements Listener {
 			return;
 		}
 		if (Arrays.asList(Material.BEETROOT_SEEDS,
-		                  Material.SEEDS,
 		                  Material.MELON_SEEDS,
+		                  Material.MELON,
 		                  Material.PUMPKIN_SEEDS,
 		                  Material.SPECKLED_MELON).contains(hand)) {
-			chanceModifier = foodCalc(target, hand);
+			chanceModifier = foodCalc(target, hand); // todo increase chance of egg/fertile egg by type of food.
 		}
 		else {
 			return;
@@ -83,27 +83,29 @@ public class BreedListener implements Listener {
 		}
 */
 		
-		int random = new Random().nextInt(100);
+		// int random = new Random().nextInt(100);
 		double x = target.getLocation().getX();
 		double y = target.getLocation().getY() + 1;
 		double z = target.getLocation().getZ();
 		if (hasMate) {
-			FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
-			FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 1);
-			FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
-			FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 1);
-			
-			if (random < cfg.getInt("fertile-chance")) {
+			if (ThreadLocalRandom.current().nextInt(100) < cfg.getInt("fertile-chance")) {
 				w.dropItemNaturally(loc, items.fertileEgg.clone());
+				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
+				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
+				FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
+				FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 			}
-			else {
+			else if (ThreadLocalRandom.current().nextInt(1,101) < cfg.getInt("base-chance")){
 				w.dropItemNaturally(loc, items.regEgg.clone());
+				FastParticle.spawnParticle(target.getWorld(),ParticleType.REDSTONE,target.getLocation(),3,x,y,z);
+				FastParticle.spawnParticle(mate.getWorld(),ParticleType.REDSTONE,mate.getLocation(),1,x,y,z);
 			}
+			
 		}
 		else {
-			if (random < cfg.getInt("egg-chance")) {
-				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3);
-				FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
+			if (ThreadLocalRandom.current().nextInt(100) < cfg.getInt("egg-chance")) {
+				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3,x,y,z);
+				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());
 			}
 		}
