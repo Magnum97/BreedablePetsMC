@@ -9,15 +9,16 @@ import me.magnum.lib.CheckSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CommandAlias("breedablepet|bp")
 public class Command extends BaseCommand {
 	
-	@CommandAlias("breedablepet|bp")
 	@HelpCommand
-	public void onHelp (CommandSender sender, CommandHelp commandHelp) {
-		commandHelp.showHelp();
+	public void onHelp (CommandSender sender, CommandHelp help) {
+		help.showHelp();
 	}
 	
 	@Subcommand("parrotegg")
+	@Description("Get a parrot egg")
 	@CommandPermission("breedable.parrot.regEgg")
 	public void onCommand (CommandSender sender, @Default("false") String fertile) {
 		ItemUtil util = new ItemUtil();

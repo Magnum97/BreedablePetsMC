@@ -23,7 +23,7 @@ public class SpawnPets {
 		}
 		if (Main.cfg.getBoolean("hatches.named")) {
 			parrot.setCustomNameVisible(true);
-			parrot.setCustomName(ChatColor.translateAlternateColorCodes('&', Main.cfg.getString("hatches.named.name")));
+			parrot.setCustomName(ChatColor.translateAlternateColorCodes('&', Main.cfg.getString("hatches.name")));
 		}
 	}
 }

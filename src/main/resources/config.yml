@@ -5,7 +5,7 @@ egg-chance: 10
 # chance that feeding with a mate nearby produces an egg
 paired-egg-chance: 20
 # chance that a mated pair will produce a fertile egg
-fertile-chance: 30
+fertile-egg-chance: 30
 # Chance of a parrot egg hatching
 hatch-chance: 10
 # chance modifiers increase chance of eggs depending on what food you use
@@ -24,6 +24,6 @@ hatches:
   # Will hatched parrots have a custom name?
   named: true
     # Custom name of hatchling
-    name: "&Bhatchling"
+  name: "&Bhatchling"
   # True = hatchlings are tamed by player. False = parrot is wild & tameable
   tamed: true

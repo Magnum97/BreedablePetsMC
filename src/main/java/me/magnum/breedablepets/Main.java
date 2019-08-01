@@ -31,9 +31,11 @@ public class Main extends JavaPlugin {
 		registerCommands();
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void registerCommands () {
 		BukkitCommandManager commandManager = new BukkitCommandManager(plugin);
 		commandManager.registerCommand(new me.magnum.breedablepets.Command());
+		commandManager.enableUnstableAPI("help");
 	}
 	
 	

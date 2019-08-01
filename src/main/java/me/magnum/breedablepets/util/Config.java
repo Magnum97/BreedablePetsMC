@@ -35,10 +35,10 @@ public class Config extends SimpleConfig {
 		Common.setInstance(Main.plugin);
 		version = getString("version");
 		eggChance = getInt("egg-chance");
-		pairedChance = getInt("paired-chance");
-		fertileChance = getInt("fertile-chance");
+		pairedChance = getInt("paired-egg-chance");
+		fertileChance = getInt("fertile-egg-chance");
 		nameHatchling = getBoolean("hatches.named");
-		hatchLingName = getString("hatches.named.name");
+		hatchLingName = getString("hatches.name");
 		tamedHatchling = getBoolean("hatches.tamed");
 		
 	}
