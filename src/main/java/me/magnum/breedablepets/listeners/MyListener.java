@@ -1,22 +1,18 @@
 package me.magnum.breedablepets.listeners;
 
 import me.magnum.breedablepets.Main;
+import me.magnum.breedablepets.util.Config;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
 import me.magnum.lib.Common;
-import me.magnum.lib.ItemBuilder;
 import org.bukkit.Material;
-import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerEggThrowEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -30,7 +26,7 @@ public class MyListener implements Listener {
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.regEgg)) {
 			e.setHatching(false);
 			Common.sendABar(e.getPlayer(), "I really hope it hatches...");
-			if (ThreadLocalRandom.current().nextInt(100) < Main.cfg.getInt("hatch-chance")) {
+			if (ThreadLocalRandom.current().nextInt(100) < Config.eggChance) {
 				SpawnPets.newParrot(e.getPlayer(), e.getEgg().getLocation());
 			}
 		}
@@ -53,17 +49,17 @@ public class MyListener implements Listener {
 		// todo add config option here
 		Common.setInstance(Main.plugin);
 		if ((e.getItem() != null) && (e.getItem().getType() != Material.AIR)) {
-			if (e.getItem().getType() == Material.EGG){
-				Dispenser dispensoer = (Dispenser)e.getBlock().getState();
-				if (dispensoer.getInventory().contains(Material.EGG)){
+			if (e.getItem().getType() == Material.EGG) {
+				Dispenser dispenser = (Dispenser) e.getBlock().getState();
+				if (dispenser.getInventory().contains(Material.EGG)) {
 					ItemStack before;
 					int amount;
 					int slot;
-					slot = dispensoer.getInventory().first(Material.EGG);
-					before = dispensoer.getInventory().getItem(slot);
+					slot = dispenser.getInventory().first(Material.EGG);
+					before = dispenser.getInventory().getItem(slot);
 					amount = before.getAmount();
-					before.setAmount(amount-1);
-				e.setCancelled(true);
+					before.setAmount(amount - 1);
+					e.setCancelled(true);
 				}
 			}
 		}

@@ -31,6 +31,10 @@ public class Config extends SimpleConfig {
 		});
 	}
 	
+	public static void init () {
+		new Config("config.yml", Main.plugin).onLoad();
+	}
+	
 	private void onLoad () {
 		Common.setInstance(Main.plugin);
 		// version = getString("version");
@@ -41,10 +45,6 @@ public class Config extends SimpleConfig {
 		hatchLingName = getString("hatches.name");
 		tamedHatchling = getBoolean("hatches.tamed");
 		
-	}
-	
-	public static void init () {
-		new Config("config.yml", Main.plugin).onLoad();
 	}
 	
 }

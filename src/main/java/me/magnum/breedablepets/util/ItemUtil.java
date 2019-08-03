@@ -21,8 +21,8 @@ public class ItemUtil {
 		if (fertile) {
 			egg = new ItemBuilder(Material.EGG)
 					.setName("§eFertile Parrot Egg")
-					.addLoreLine("I think it moved!")
-					.addLoreLine("I bet it is ready to hatch!")
+					.addLoreLine("Did it just move?")
+					.addLoreLine("I think it is ready to hatch!")
 					.toItemStack();
 		}
 		else {

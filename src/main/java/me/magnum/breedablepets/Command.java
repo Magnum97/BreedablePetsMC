@@ -48,6 +48,4 @@ public class Command extends BaseCommand {
 		Player p = (Player) sender;
 		SpawnPets.newParrot(p, p.getLocation());
 	}
-	
-	
 }

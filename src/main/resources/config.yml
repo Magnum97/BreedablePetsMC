@@ -24,7 +24,7 @@ modifier:
 # Custom name for hatches
 hatches:
   # Will hatched parrots have a custom name?
-  named: true
+  named: false
     # Custom name of hatchling
   name: "&Bhatchling"
   # True = hatchlings are tamed by player. False = parrot is wild & tameable
