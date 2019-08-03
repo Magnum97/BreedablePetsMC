@@ -8,6 +8,8 @@ paired-egg-chance: 20
 fertile-egg-chance: 30
 # Chance of a parrot egg hatching
 hatch-chance: 10
+# if egg is hatching chance of rare color (Cyan or Gray)
+rare-chance: 1
 # chance modifiers increase chance of eggs depending on what food you use
 # modifier of 0 does not change base chance
 

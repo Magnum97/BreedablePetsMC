@@ -3,6 +3,7 @@ package me.magnum.breedablepets.listeners;
 import fr.mrmicky.fastparticle.FastParticle;
 import fr.mrmicky.fastparticle.ParticleType;
 import me.magnum.breedablepets.Main;
+import me.magnum.breedablepets.util.Config;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.lib.SimpleConfig;
 import org.bukkit.Location;
@@ -103,7 +104,7 @@ public class BreedListener implements Listener {
 			
 		}
 		else {
-			if (ThreadLocalRandom.current().nextInt(100) < cfg.getInt("egg-chance")) {
+			if (ThreadLocalRandom.current().nextInt(100) < Config.eggChance) {
 				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3,x,y,z);
 				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());

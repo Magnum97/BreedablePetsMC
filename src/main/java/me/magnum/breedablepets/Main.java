@@ -21,11 +21,11 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable () {
 		plugin = this;
+		Common.setInstance(plugin);
+		Common.log("Loading breed-able pets...");
 		cfg = new SimpleConfig("config.yml", plugin);
 		Config.init();
 		// Remain.setPlugin(plugin);  //todo Add compatability
-		Common.setInstance(plugin);
-		Common.log("Loading breed-able pets...");
 		plugin.getServer().getPluginManager().registerEvents(new MyListener(), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), plugin);
 		registerCommands();

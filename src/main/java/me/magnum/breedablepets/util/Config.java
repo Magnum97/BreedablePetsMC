@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class Config extends SimpleConfig {
 	
-	public static String version;
+	// public static String version;
 	public static int eggChance;
 	public static int pairedChance;
 	public static int hatchChance;
@@ -33,7 +33,7 @@ public class Config extends SimpleConfig {
 	
 	private void onLoad () {
 		Common.setInstance(Main.plugin);
-		version = getString("version");
+		// version = getString("version");
 		eggChance = getInt("egg-chance");
 		pairedChance = getInt("paired-egg-chance");
 		fertileChance = getInt("fertile-egg-chance");
