@@ -1,4 +1,8 @@
-import org.apache.tools.ant.filters.ReplaceTokens // We use this to replace version in plugin.yml
+// Configure Auto Relocation
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
+// We use this to replace version in plugin.yml
+import org.apache.tools.ant.filters.ReplaceTokens
 
 
 plugins {
@@ -8,12 +12,11 @@ plugins {
 }
 
 group= 'me.magnum' // Put your groupId here
-version= '1.0.0-SNAPSHOT' // Put your version here
+version= '1.2.0' // Put your version here
 archivesBaseName = 'BreedablePets' // Put your artifactId here
 mainClassName = 'me.magnum.breedablepets.Main'
 targetCompatibility = 1.8
 sourceCompatibility = 1.8
-def bukkitVersion = '1.14.2-R0.1-SNAPSHOT' // Put the version of Bukkit/Spigot you want your plugin to depend on
 
 repositories {
     mavenLocal()
@@ -30,19 +33,23 @@ compileJava {
     options.fork = true
     options.forkOptions.executable = 'javac'
 }
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly "org.spigotmc:spigot-api:1.14.2-R0.1-SNAPSHOT"
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    implementation 'fr.mrmicky:FastParticles:1.2.0'
+//    implementation 'com.github.ByteZ1337:ParticleLib:1.1'
 
-    compileOnly "org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT"
-    compile "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
+    implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
     implementation 'me.magnum.lib:CommonLibrary:1.0.3-SNAPSHOT'
-    implementation 'com.github.kangarko:Remain:3.2.0'
+//    implementation 'com.github.kangarko:Remain:3.2.0'
 }
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "shadow" // Default value is "shadow"
 
+}
 /* This will replace '@VERSION@' in the plugin.yml with the version declared above, just put '@VERSION@' for the version in the plugin.yml */
 processResources {
     filter ReplaceTokens, tokens: [
@@ -52,7 +59,10 @@ processResources {
     ]
 }
 shadowJar {
+//    archiveClassifier.set("dev")
+    archiveClassifier.set(null)
     relocate 'co.aikar.commands', 'me.magnum.breedablepets.acf'
+    relocate 'org.mineacademy.remain', 'me.magnum.breedablepets.remain'
 }
 
 build.dependsOn shadowJar
