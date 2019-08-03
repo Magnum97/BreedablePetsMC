@@ -96,16 +96,18 @@ public class BreedListener implements Listener {
 				FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
 				FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 			}
-			else if (ThreadLocalRandom.current().nextInt(1,101) < cfg.getInt("base-chance")){
-				w.dropItemNaturally(loc, items.regEgg.clone());
-				FastParticle.spawnParticle(target.getWorld(),ParticleType.REDSTONE,target.getLocation(),3,x,y,z);
-				FastParticle.spawnParticle(mate.getWorld(),ParticleType.REDSTONE,mate.getLocation(),1,x,y,z);
+			else {
+				if (ThreadLocalRandom.current().nextInt(1, 101) < cfg.getInt("base-chance")) {
+					w.dropItemNaturally(loc, items.regEgg.clone());
+					FastParticle.spawnParticle(target.getWorld(), ParticleType.REDSTONE, target.getLocation(), 3, x, y, z);
+					FastParticle.spawnParticle(mate.getWorld(), ParticleType.REDSTONE, mate.getLocation(), 1, x, y, z);
+				}
 			}
 			
 		}
 		else {
 			if (ThreadLocalRandom.current().nextInt(100) < Config.eggChance) {
-				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3,x,y,z);
+				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3, x, y, z);
 				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());
 			}
@@ -133,9 +135,7 @@ public class BreedListener implements Listener {
 				chance = cfg.getInt("modifier.glistering");
 				break;
 		}
-		
 		return chance;
-		
 	}
 }
 
