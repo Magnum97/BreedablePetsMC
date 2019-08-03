@@ -1,6 +1,7 @@
 package me.magnum.breedablepets.listeners;
 
 import me.magnum.breedablepets.Main;
+import me.magnum.breedablepets.util.Config;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
 import me.magnum.lib.Common;
@@ -25,7 +26,7 @@ public class MyListener implements Listener {
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.regEgg)) {
 			e.setHatching(false);
 			Common.sendABar(e.getPlayer(), "I really hope it hatches...");
-			if (ThreadLocalRandom.current().nextInt(100) < Main.cfg.getInt("hatch-chance")) {
+			if (ThreadLocalRandom.current().nextInt(100) < Config.eggChance) {
 				SpawnPets.newParrot(e.getPlayer(), e.getEgg().getLocation());
 			}
 		}
@@ -49,13 +50,13 @@ public class MyListener implements Listener {
 		Common.setInstance(Main.plugin);
 		if ((e.getItem() != null) && (e.getItem().getType() != Material.AIR)) {
 			if (e.getItem().getType() == Material.EGG) {
-				Dispenser dispensoer = (Dispenser) e.getBlock().getState();
-				if (dispensoer.getInventory().contains(Material.EGG)) {
+				Dispenser dispenser = (Dispenser) e.getBlock().getState();
+				if (dispenser.getInventory().contains(Material.EGG)) {
 					ItemStack before;
 					int amount;
 					int slot;
-					slot = dispensoer.getInventory().first(Material.EGG);
-					before = dispensoer.getInventory().getItem(slot);
+					slot = dispenser.getInventory().first(Material.EGG);
+					before = dispenser.getInventory().getItem(slot);
 					amount = before.getAmount();
 					before.setAmount(amount - 1);
 					e.setCancelled(true);

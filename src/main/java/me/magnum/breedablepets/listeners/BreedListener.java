@@ -89,7 +89,7 @@ public class BreedListener implements Listener {
 		double y = target.getLocation().getY() + 1;
 		double z = target.getLocation().getZ();
 		if (hasMate) {
-			if (ThreadLocalRandom.current().nextInt(100) < cfg.getInt("fertile-chance")) {
+			if (ThreadLocalRandom.current().nextInt(100) < Config.fertileChance ) {
 				w.dropItemNaturally(loc, items.fertileEgg.clone());
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
@@ -97,7 +97,7 @@ public class BreedListener implements Listener {
 				FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 			}
 			else {
-				if (ThreadLocalRandom.current().nextInt(1, 101) < cfg.getInt("base-chance")) {
+				if (ThreadLocalRandom.current().nextInt(1, 101) < Config.eggChance ) {
 					w.dropItemNaturally(loc, items.regEgg.clone());
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.REDSTONE, target.getLocation(), 3, x, y, z);
 					FastParticle.spawnParticle(mate.getWorld(), ParticleType.REDSTONE, mate.getLocation(), 1, x, y, z);
