@@ -19,7 +19,7 @@ public class Command extends BaseCommand {
 	
 	@Subcommand("parrotegg")
 	@Description("Get a parrot egg")
-	@CommandPermission("breedable.parrot.regEgg")
+	@CommandPermission("breedable.parrot.egg")
 	public void onCommand (CommandSender sender, @Default("false") String fertile) {
 		ItemUtil util = new ItemUtil();
 		Player p = (Player) sender;
@@ -27,7 +27,7 @@ public class Command extends BaseCommand {
 		if (!CheckSender.isPlayer(sender)) {
 			return;
 		}
-		if (fertile.equalsIgnoreCase("fertile")) {
+		if ((fertile.equalsIgnoreCase("fertile"))&& sender.hasPermission("breedable.parrot.fertile")) {
 			p.getInventory().addItem(util.fertileEgg);
 			return;
 		}
@@ -35,6 +35,7 @@ public class Command extends BaseCommand {
 	}
 	
 	@Subcommand("reload")
+	@CommandPermission("breedable.reload")
 	public void onReload (CommandSender sender) {
 		Main.cfg.reloadConfig();
 	}
