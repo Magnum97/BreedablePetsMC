@@ -56,6 +56,7 @@ public class BreedListener implements Listener {
 			return;
 		}
 		pie.setCancelled(true);
+		sitting.setSitting(true);
 		player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
 		
 		// Common.tell(player, "Base chance of egg: " + chanceModifier); // todo remove before deploy
@@ -90,7 +91,8 @@ public class BreedListener implements Listener {
 		double z = target.getLocation().getZ();
 		if (hasMate) {
 			if (ThreadLocalRandom.current().nextInt(100) < Config.fertileChance ) {
-				w.dropItemNaturally(loc, items.fertileEgg.clone());
+				w.dropItemNaturally(loc, items.regEgg.clone());
+				// w.dropItemNaturally(loc, items.fertileEgg.clone());  // todo To be fertile egg - disabled until single throw bug fixed
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
 				FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
@@ -99,8 +101,10 @@ public class BreedListener implements Listener {
 			else {
 				if (ThreadLocalRandom.current().nextInt(1, 101) < Config.eggChance ) {
 					w.dropItemNaturally(loc, items.regEgg.clone());
-					FastParticle.spawnParticle(target.getWorld(), ParticleType.REDSTONE, target.getLocation(), 3, x, y, z);
-					FastParticle.spawnParticle(mate.getWorld(), ParticleType.REDSTONE, mate.getLocation(), 1, x, y, z);
+					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
+					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
+					FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
+					FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 				}
 			}
 			

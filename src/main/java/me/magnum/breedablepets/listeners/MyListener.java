@@ -37,12 +37,14 @@ public class MyListener implements Listener {
 		}
 	}
 	
+/*
 	@EventHandler
 	public void onHatch (CreatureSpawnEvent e) {
 		if (e.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.DISPENSE_EGG)) {
 			e.setCancelled(true);
 		}
 	}
+*/
 	
 	@EventHandler
 	public void onDispenseEgg (BlockDispenseEvent e) {
