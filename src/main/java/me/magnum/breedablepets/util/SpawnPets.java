@@ -17,6 +17,7 @@ public class SpawnPets {
 		World world = player.getWorld();
 		Parrot parrot = (Parrot) world.spawnEntity(location, EntityType.PARROT);
 		parrot.setTamed(Main.cfg.getBoolean("hatches.tamed"));
+		parrot.setHealth(1);
 		if (parrot.isTamed()) {
 			parrot.setOwner(player);
 			parrot.setSitting(true);
