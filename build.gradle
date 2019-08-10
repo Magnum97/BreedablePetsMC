@@ -12,7 +12,7 @@ plugins {
 }
 
 group= 'me.magnum' // Put your groupId here
-version= '1.2.0' // Put your version here
+version= '1.3.0' // Put your version here
 archivesBaseName = 'BreedablePets' // Put your artifactId here
 mainClassName = 'me.magnum.breedablepets.Main'
 targetCompatibility = 1.8
