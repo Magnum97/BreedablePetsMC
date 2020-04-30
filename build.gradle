@@ -2,13 +2,13 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 
 // We use this to replace version in plugin.yml
-import org.apache.tools.ant.filters.ReplaceTokens
-
+// import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'java'
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'kr.entree.spigradle' version '1.2.4'
+    id "io.freefair.lombok" version "5.0.0-rc2"
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
 group= 'me.magnum' // Put your groupId here
@@ -18,54 +18,62 @@ mainClassName = 'me.magnum.breedablepets.Main'
 targetCompatibility = 1.8
 sourceCompatibility = 1.8
 
+// See https://github.com/EntryPointKR/Spigradle#repositories for repository shortcodes
 repositories {
     mavenLocal()
     mavenCentral()
+    paper()
+    enderZone()
     maven { url = "https://repo.aikar.co/content/groups/aikar/" }
-    maven { url = "https://hub.spigotmc.org/nexus/content/groups/public/" }
+    jitpack() // For vault
+}
 
-    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots" } // Spigot Repo
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // Sonatype snapshots
-    maven { url 'https://jitpack.io' }
+dependencies {
+    spigot()
+    paper()
+    implementation 'fr.mrmicky:FastParticles:1.2.0'
+    implementation  'com.github.JavaFactoryDev:LightningStorage:3.0.3'
+    implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
+    implementation 'com.github.kangarko:Foundation:5.1.8@jar' // Kangerko's Foundation library
+
 }
 compileJava {
     options.compilerArgs += ["-parameters"]
     options.fork = true
     options.forkOptions.executable = 'javac'
 }
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
-    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
-    implementation 'fr.mrmicky:FastParticles:1.2.0'
-//    implementation 'com.github.ByteZ1337:ParticleLib:1.1'
-
-    implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
-    implementation 'me.magnum.lib:CommonLibrary:1.0.3-SNAPSHOT'
-//    implementation 'com.github.kangarko:Remain:3.2.0'
-}
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
     prefix = "shadow" // Default value is "shadow"
 
 }
-/* This will replace '@VERSION@' in the plugin.yml with the version declared above, just put '@VERSION@' for the version in the plugin.yml */
-processResources {
-    filter ReplaceTokens, tokens: [
-            "VERSION": version,
-            "NAME"   : archivesBaseName,
-            "MAIN"   : mainClassName,
-    ]
-}
 shadowJar {
-//    archiveClassifier.set("dev")
-    archiveClassifier.set(null)
-    archiveVersion.set(null)
-    relocate 'co.aikar.commands', 'me.magnum.breedablepets.acf'
-    relocate 'org.mineacademy.remain', 'me.magnum.breedablepets.remain'
+    classifier = null // remove -all from end of jar
 }
-
-build.dependsOn shadowJar
-
+spigot {
+    authors = ['Magnum1997']
+//    depends = ['ProtocolLib']
+    apiVersion = '1.15'
+    load = STARTUP
+    commands {
+        give {
+            aliases = ['i']
+            description = 'Give command.'
+            permission = 'test.foo'
+            permissionMessage = 'You do not have permission!'
+            usage = '/<command> [test|stop]'
+        }
+    }
+    permissions {
+        'test.foo' {
+            description = 'Allows foo command'
+            defaults = 'true'
+        }
+        'test.*' {
+            description = 'Wildcard permission'
+            defaults = 'op'
+            children = ['test.foo': true]
+        }
+    }
+}
 compileJava.options.encoding = 'UTF-8' // Encode your source code with UTF-8
