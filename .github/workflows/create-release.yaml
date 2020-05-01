@@ -1,0 +1,42 @@
+# This workflow will create a release on v-tag push
+
+name: Create release
+descriptiom: "create a release on pushs with v-tag"
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - uses: actions/checkout@v2
+      - name: Build project
+        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
+        with:
+          args: build
+      - uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # TODO Edit body with changelog before pushing tags.
+          body: |
+            Changelog for ${{ steps.get_version.outputs.VERSION }} :
+            * Remove lombok from dependency list
+            * Add lombok plugin for Gradle
+            * Rename workflow files for easy identification
+            * Cleanup action.yml workflow
+            * Create-release workflow only zips folders
+          files: build/libs/BreedablePets-${{ steps.get_version.outputs.VERSION }}.jar
+          gzip: folders
+
+      - name: Send file JAR to discord channel
+        uses: sinshutu/upload-to-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: build/libs/BreedablePets-${{ steps.get_version.outputs.VERSION }}.jar
+#          args: README.md
