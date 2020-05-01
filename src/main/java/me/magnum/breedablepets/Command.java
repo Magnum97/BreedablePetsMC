@@ -28,11 +28,11 @@ package me.magnum.breedablepets;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import me.magnum.breedablepets.util.CheckSender;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.mineacademy.fo.command.SimpleCommand;
 
 @CommandAlias("breedablepet|bp")
 public class Command extends BaseCommand {
@@ -48,7 +48,8 @@ public class Command extends BaseCommand {
 	public void onCommand (CommandSender sender, @Default("false") String fertile) {
 		ItemUtil util = new ItemUtil();
 		Player p = (Player) sender;
-		if (sender == null){
+		
+		if (! CheckSender.isPlayer(sender)) {
 			return;
 		}
 		if ((fertile.equalsIgnoreCase("fertile"))&& sender.hasPermission("breedable.parrot.fertile")) {
@@ -67,7 +68,7 @@ public class Command extends BaseCommand {
 	@CommandAlias("sp")
 	@CommandPermission("me.magnum")
 	public void onCommand (CommandSender sender) {
-		if (sender == null){
+		if (!CheckSender.isPlayer(sender)) {
 			return;
 		}
 		Player p = (Player) sender;

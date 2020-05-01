@@ -29,16 +29,16 @@ import co.aikar.commands.BukkitCommandManager;
 import lombok.Getter;
 import me.magnum.breedablepets.listeners.BreedListener;
 import me.magnum.breedablepets.listeners.MyListener;
+import me.magnum.breedablepets.util.Common;
 import me.magnum.breedablepets.util.SimpleConfig;
 import me.magnum.breedablepets.util.SimpleConfigManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
-import org.mineacademy.fo.Common;
-import org.mineacademy.fo.plugin.SimplePlugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 @kr.entree.spigradle.Plugin
-public class Main extends SimplePlugin {
+public class Main extends JavaPlugin {
 
 	@Getter
 	private static Main plugin;
@@ -48,7 +48,7 @@ public class Main extends SimplePlugin {
 	private SimpleConfigManager configManager;
 
 	@Override
-	public void onPluginStart () {
+	public void onEnable () {
 		plugin = this;
 		configManager = new SimpleConfigManager(plugin);
 		Common.log("Loading breed-able pets...");
@@ -69,7 +69,7 @@ public class Main extends SimplePlugin {
 
 
 	@Override
-	public void onPluginStop () {
+	public void onDisable () {
 		Common.log("Disabling Breedable pets.");
 		// Remain.setPlugin(null);
 		cfg = null;
