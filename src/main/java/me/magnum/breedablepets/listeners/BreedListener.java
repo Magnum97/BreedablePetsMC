@@ -28,9 +28,7 @@ package me.magnum.breedablepets.listeners;
 import fr.mrmicky.fastparticle.FastParticle;
 import fr.mrmicky.fastparticle.ParticleType;
 import me.magnum.breedablepets.Main;
-import me.magnum.breedablepets.util.Config;
 import me.magnum.breedablepets.util.ItemUtil;
-import me.magnum.lib.SimpleConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -46,14 +44,14 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BreedListener implements Listener {
-	
+
 	private final ItemUtil items = new ItemUtil();
-	private final SimpleConfig cfg = Main.cfg;
-	
+	//	private final SimpleConfig cfg = Main.getCfg();
+
 	public BreedListener () {
 	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+
+	@EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onFeed (PlayerInteractEntityEvent pie) {
 		Player player = pie.getPlayer();
 		Entity target = pie.getRightClicked();
@@ -63,7 +61,7 @@ public class BreedListener implements Listener {
 		}
 		Tameable tamed = (Tameable) target;
 		Sittable sitting = (Sittable) target;
-		if ((!tamed.isTamed()) || (!sitting.isSitting())) {
+		if ((! tamed.isTamed()) || (! sitting.isSitting())) {
 			return;
 		}
 		int chanceModifier;
@@ -71,10 +69,10 @@ public class BreedListener implements Listener {
 			return;
 		}
 		if (Arrays.asList(Material.BEETROOT_SEEDS,
-		                  Material.MELON_SEEDS,
-		                  Material.MELON,
-		                  Material.PUMPKIN_SEEDS,
-		                  Material.SPECKLED_MELON).contains(hand)) {
+				Material.MELON_SEEDS,
+				Material.MELON,
+				Material.PUMPKIN_SEEDS,
+				Material.GLISTERING_MELON_SLICE).contains(hand)) {
 			chanceModifier = foodCalc(target, hand); // todo increase chance of egg/fertile egg by type of food.
 		}
 		else {
@@ -83,16 +81,16 @@ public class BreedListener implements Listener {
 		pie.setCancelled(true);
 		sitting.setSitting(true);
 		player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-		
+
 		// Common.tell(player, "Base chance of egg: " + chanceModifier); // todo remove before deploy
-		
+
 		List <Entity> nearby = target.getNearbyEntities(5, 2, 5);
-		
+
 		World w = player.getWorld();
 		Location loc = target.getLocation();
 		Entity mate = null;
 		boolean hasMate = false;
-		
+
 		for (Entity entity : nearby) {
 			if (entity.getType() == target.getType()) {
 				hasMate = true;
@@ -109,13 +107,13 @@ public class BreedListener implements Listener {
 			}
 		}
 */
-		
+
 		// int random = new Random().nextInt(100);
 		double x = target.getLocation().getX();
 		double y = target.getLocation().getY() + 1;
 		double z = target.getLocation().getZ();
 		if (hasMate) {
-			if (ThreadLocalRandom.current().nextInt(100) < Config.fertileChance ) {
+			if (ThreadLocalRandom.current().nextInt(100) < (Main.getCfg().getInt("fertile-egg-chance"))) {
 				w.dropItemNaturally(loc, items.regEgg.clone());
 				// w.dropItemNaturally(loc, items.fertileEgg.clone());  // todo To be fertile egg - disabled until single throw bug fixed
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
@@ -124,7 +122,7 @@ public class BreedListener implements Listener {
 				FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 			}
 			else {
-				if (ThreadLocalRandom.current().nextInt(1, 101) < Config.eggChance ) {
+				if (ThreadLocalRandom.current().nextInt(1, 101) < Main.getCfg().getInt("egg-chance")) {
 					w.dropItemNaturally(loc, items.regEgg.clone());
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
@@ -132,36 +130,37 @@ public class BreedListener implements Listener {
 					FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 				}
 			}
-			
+
 		}
 		else {
-			if (ThreadLocalRandom.current().nextInt(100) < Config.eggChance) {
+			if (ThreadLocalRandom.current().nextInt(100) < Main.getCfg().getInt("egg-change")) {
 				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3, x, y, z);
 				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());
 			}
 		}
-		
+
 	}
-	
+
 	// todo get length of configuration section and make array of item/chance pairs.
 	private Integer foodCalc (Entity target, Material type) {
 		int chance = 0;
 		switch (type) {
-			case SEEDS:
-				chance = cfg.getInt("modifier.wheat");
+			case WHEAT_SEEDS:
+				chance = Main.getCfg().getInt("modifier.wheat");
 				break;
 			case BEETROOT_SEEDS:
-				chance = cfg.getInt("modifier.beetroot");
+				chance = Main.getCfg().getInt("modifier.beetroot");
 				break;
 			case PUMPKIN_SEEDS:
-				chance = cfg.getInt("modifier.pumpkin");
+				chance = Main.getCfg().getInt("modifier.pumpkin");
 				break;
 			case MELON_SEEDS:
-				chance = cfg.getInt("modifier.melon");
+				chance = Main.getCfg().getInt("modifier.melon");
 				break;
-			case SPECKLED_MELON:
-				chance = cfg.getInt("modifier.glistering");
+			case GLISTERING_MELON_SLICE:
+				_MELON:
+				chance = Main.getCfg().getInt("modifier.glistering");
 				break;
 		}
 		return chance;

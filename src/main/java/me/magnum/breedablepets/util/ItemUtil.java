@@ -25,7 +25,6 @@
  */
 package me.magnum.breedablepets.util;
 
-import me.magnum.lib.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,24 +43,22 @@ public class ItemUtil {
 	private ItemStack makeEgg (boolean fertile) {
 		ItemStack egg;
 		if (fertile) {
-			egg = new ItemBuilder(Material.EGG)
-					.setName("§eFertile Parrot Egg")
+			egg = new ItemFactory(Material.EGG)
+					.setDisplayName("§eFertile Parrot Egg")
 					.addLoreLine("Did it just move?")
-					.addLoreLine("I think it is ready to hatch!")
-					.toItemStack();
+					.addLoreLine("I think it is ready to hatch!").build();
 		}
 		else {
-			egg = new ItemBuilder(Material.EGG)
-					.setName("§aParrot Egg")
+			egg = new ItemFactory(Material.EGG)
+					.setDisplayName("§aParrot Egg")
 					.addLoreLine("We don't know how it got here,")
 					.addLoreLine("but it might hatch a parrot!")
-					.toItemStack();
+					.build();
 		}
 		return egg;
 	}
 	
 	public ItemStack birdFood () {
-		ItemStack bf = new ItemBuilder(Material.PUMPKIN_SEEDS).toItemStack();
-		return bf;
+		return new ItemFactory(Material.PUMPKIN_SEEDS).build();
 	}
 }
