@@ -50,6 +50,7 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 shadowJar {
     classifier = null // remove -all from end of jar
 }
+// TODO Create plugin.yml with correct info
 spigot {
     authors = ['Magnum1997']
 //    depends = ['ProtocolLib']

@@ -38,7 +38,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @kr.entree.spigradle.Plugin
-public class Main extends JavaPlugin {
+public class Main extends JavaPlugin { // TODO Refactor & rename class
 
 	@Getter
 	private static Main plugin;
