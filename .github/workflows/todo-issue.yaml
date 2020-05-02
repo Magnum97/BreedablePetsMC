@@ -1,7 +1,7 @@
 name: "Workflow"
 on: ["push"]
 jobs:
-  build:
+  yaml-to-list:
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@master"
@@ -15,6 +15,10 @@ jobs:
           LABEL: "# TODO"
           COMMENT_MARKER: "#"
         id: "todo"
+  java-to-list:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@master"
       - name: "TODO to Issue for Java"
         uses: "alstr/todo-to-issue-action@master"
         with:
