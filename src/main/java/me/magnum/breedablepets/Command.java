@@ -28,6 +28,7 @@ package me.magnum.breedablepets;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import me.magnum.Breedable;
 import me.magnum.breedablepets.util.CheckSender;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
@@ -62,7 +63,7 @@ public class Command extends BaseCommand {
 	@Subcommand("reload")
 	@CommandPermission("breedable.reload")
 	public void onReload (CommandSender sender) {
-		Main.getCfg().reloadConfig();
+		Breedable.getCfg().reloadConfig();
 	}
 	
 	@CommandAlias("sp")

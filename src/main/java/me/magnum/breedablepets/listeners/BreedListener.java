@@ -27,7 +27,7 @@ package me.magnum.breedablepets.listeners;
 
 import fr.mrmicky.fastparticle.FastParticle;
 import fr.mrmicky.fastparticle.ParticleType;
-import me.magnum.breedablepets.Main;
+import me.magnum.Breedable;
 import me.magnum.breedablepets.util.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -113,7 +113,7 @@ public class BreedListener implements Listener {
 		double y = target.getLocation().getY() + 1;
 		double z = target.getLocation().getZ();
 		if (hasMate) {
-			if (ThreadLocalRandom.current().nextInt(100) < (Main.getCfg().getInt("fertile-egg-chance"))) {
+			if (ThreadLocalRandom.current().nextInt(100) < (Breedable.getCfg().getInt("fertile-egg-chance"))) {
 				w.dropItemNaturally(loc, items.regEgg.clone());
 				// w.dropItemNaturally(loc, items.fertileEgg.clone());  // todo To be fertile egg - disabled until single throw bug fixed
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
@@ -122,7 +122,7 @@ public class BreedListener implements Listener {
 				FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 			}
 			else {
-				if (ThreadLocalRandom.current().nextInt(1, 101) < Main.getCfg().getInt("egg-chance")) {
+				if (ThreadLocalRandom.current().nextInt(1, 101) < Breedable.getCfg().getInt("egg-chance")) {
 					w.dropItemNaturally(loc, items.regEgg.clone());
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
@@ -133,7 +133,7 @@ public class BreedListener implements Listener {
 
 		}
 		else {
-			if (ThreadLocalRandom.current().nextInt(100) < Main.getCfg().getInt("egg-change")) {
+			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getCfg().getInt("egg-change")) {
 				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3, x, y, z);
 				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());
@@ -147,20 +147,20 @@ public class BreedListener implements Listener {
 		int chance = 0;
 		switch (type) {
 			case WHEAT_SEEDS:
-				chance = Main.getCfg().getInt("modifier.wheat");
+				chance = Breedable.getCfg().getInt("modifier.wheat");
 				break;
 			case BEETROOT_SEEDS:
-				chance = Main.getCfg().getInt("modifier.beetroot");
+				chance = Breedable.getCfg().getInt("modifier.beetroot");
 				break;
 			case PUMPKIN_SEEDS:
-				chance = Main.getCfg().getInt("modifier.pumpkin");
+				chance = Breedable.getCfg().getInt("modifier.pumpkin");
 				break;
 			case MELON_SEEDS:
-				chance = Main.getCfg().getInt("modifier.melon");
+				chance = Breedable.getCfg().getInt("modifier.melon");
 				break;
 			case GLISTERING_MELON_SLICE:
 				_MELON:
-				chance = Main.getCfg().getInt("modifier.glistering");
+				chance = Breedable.getCfg().getInt("modifier.glistering");
 				break;
 		}
 		return chance;

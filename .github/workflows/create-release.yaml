@@ -22,14 +22,11 @@ jobs:
       - uses: meeDamian/github-release@2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # TODO Edit body with changelog before pushing tags.
           body: |
             Changelog for ${{ steps.get_version.outputs.VERSION }} :
-            * Remove lombok from dependency list
-            * Add lombok plugin for Gradle
-            * Rename workflow files for easy identification
-            * Cleanup action.yml workflow
-            * Create-release workflow only zips folders
+            * Change Materials to match Minecraft 1.15
+            * Integrated code from local API
+            * Add workflows for issue and release creation.
           files: build/libs/BreedablePets-${{ steps.get_version.outputs.VERSION }}.jar
           gzip: folders
 

@@ -25,7 +25,7 @@
  */
 package me.magnum.breedablepets.listeners;
 
-import me.magnum.breedablepets.Main;
+import me.magnum.Breedable;
 import me.magnum.breedablepets.util.Common;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
@@ -49,7 +49,7 @@ public class MyListener implements Listener {
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.regEgg)) {
 			e.setHatching(false);
 			Common.sendBar(e.getPlayer(), "I really hope it hatches...");
-			if (ThreadLocalRandom.current().nextInt(100) < Main.getCfg().getInt("egg-change")) ;
+			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getCfg().getInt("egg-change")) ;
 			{
 				SpawnPets.newParrot(e.getPlayer(), e.getEgg().getLocation());
 			}

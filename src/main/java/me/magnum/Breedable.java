@@ -23,7 +23,7 @@
  * USA
  *
  */
-package me.magnum.breedablepets;
+package me.magnum;
 
 import co.aikar.commands.BukkitCommandManager;
 import lombok.Getter;
@@ -38,10 +38,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @kr.entree.spigradle.Plugin
-public class Main extends JavaPlugin { // TODO Refactor & rename class
+public class Breedable extends JavaPlugin { // TODO Refactor & rename class
 
 	@Getter
-	private static Main plugin;
+	private static Breedable plugin;
 	@Getter
 	private static SimpleConfig cfg;
 	@Getter

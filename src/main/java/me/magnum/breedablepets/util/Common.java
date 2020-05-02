@@ -1,8 +1,6 @@
 package me.magnum.breedablepets.util;
 
-import lombok.Getter;
-import lombok.Setter;
-import me.magnum.breedablepets.Main;
+import me.magnum.Breedable;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -11,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
@@ -43,7 +40,7 @@ public class Common {
 	}
 
 	public static void log(String messages) {
-		tell(Bukkit.getConsoleSender(), "[" + Main.getPlugin().getName() + "] " + messages);
+		tell(Bukkit.getConsoleSender(), "[" + Breedable.getPlugin().getName() + "] " + messages);
 	}
 
 	public static void tell(CommandSender toWhom, String... messages) {
@@ -81,6 +78,6 @@ public class Common {
 	}
 
 	public static void runLater(int delay, Runnable task) {
-		Bukkit.getScheduler().runTaskLater(Main.getPlugin(), task, delay);
+		Bukkit.getScheduler().runTaskLater(Breedable.getPlugin(), task, delay);
 	}
 }
