@@ -54,7 +54,7 @@ public class Breedable extends JavaPlugin { // TODO Refactor & rename class
 		Common.log("Loading breed-able pets...");
 		cfg = configManager.getNewConfig("config.yml");
 		//		cfg = new SimpleConfig("config.yml", plugin);
-		// Remain.setPlugin(plugin);  //todo Add compatability
+		// Remain.setPlugin(plugin);  // TODO Add compatability
 		plugin.getServer().getPluginManager().registerEvents(new MyListener(), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), plugin);
 		registerCommands();

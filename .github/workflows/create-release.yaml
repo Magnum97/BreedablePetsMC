@@ -27,6 +27,8 @@ jobs:
             * Change Materials to match Minecraft 1.15
             * Integrated code from local API
             * Add workflows for issue and release creation.
+            * Refactored main class
+            * Change how plugin watches for eggs to hatch
           files: build/libs/BreedablePets-${{ steps.get_version.outputs.VERSION }}.jar
           gzip: folders
 

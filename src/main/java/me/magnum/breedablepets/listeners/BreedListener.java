@@ -73,7 +73,7 @@ public class BreedListener implements Listener {
 				Material.MELON,
 				Material.PUMPKIN_SEEDS,
 				Material.GLISTERING_MELON_SLICE).contains(hand)) {
-			chanceModifier = foodCalc(target, hand); // todo increase chance of egg/fertile egg by type of food.
+			chanceModifier = foodCalc(target, hand); // TODO increase chance of egg/fertile egg by type of food.
 		}
 		else {
 			return;
@@ -82,7 +82,7 @@ public class BreedListener implements Listener {
 		sitting.setSitting(true);
 		player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
 
-		// Common.tell(player, "Base chance of egg: " + chanceModifier); // todo remove before deploy
+		// Common.tell(player, "Base chance of egg: " + chanceModifier); // TODO remove before deploy
 
 		List <Entity> nearby = target.getNearbyEntities(5, 2, 5);
 
@@ -98,7 +98,7 @@ public class BreedListener implements Listener {
 			}
 		}
 		
-/* todo find nearest parrot
+/* // TODO find nearest parrot
 		for (int i = 0; i < nearby.size(); i++) {
 			if (nearby.get(i).getType().equals(EntityType.PARROT)){
 				hasMate=true;
@@ -115,7 +115,7 @@ public class BreedListener implements Listener {
 		if (hasMate) {
 			if (ThreadLocalRandom.current().nextInt(100) < (Breedable.getCfg().getInt("fertile-egg-chance"))) {
 				w.dropItemNaturally(loc, items.regEgg.clone());
-				// w.dropItemNaturally(loc, items.fertileEgg.clone());  // todo To be fertile egg - disabled until single throw bug fixed
+				// w.dropItemNaturally(loc, items.fertileEgg.clone());  // TODO To be fertile egg - disabled until single throw bug fixed
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
 				FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
@@ -142,7 +142,7 @@ public class BreedListener implements Listener {
 
 	}
 
-	// todo get length of configuration section and make array of item/chance pairs.
+	// TODO get length of configuration section and make array of item/chance pairs.
 	private Integer foodCalc (Entity target, Material type) {
 		int chance = 0;
 		switch (type) {

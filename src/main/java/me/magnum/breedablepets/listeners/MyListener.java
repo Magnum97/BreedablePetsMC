@@ -31,36 +31,54 @@ import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
 import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MyListener implements Listener {
 
+	private static HashMap <UUID, Player> flyingEggs = new HashMap <>();
+	private static HashMap <UUID, Player> flyingFertileEggs = new HashMap <>();
 	private final ItemUtil itemsAPI = new ItemUtil();
 
 	@EventHandler (priority = EventPriority.HIGH)
 	public void onEggThrow (PlayerEggThrowEvent e) {
+		UUID eggId = e.getEgg().getUniqueId();
+		e.setHatching(false);
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.regEgg)) {
-			e.setHatching(false);
 			Common.sendBar(e.getPlayer(), "I really hope it hatches...");
-			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getCfg().getInt("egg-change")) ;
-			{
-				SpawnPets.newParrot(e.getPlayer(), e.getEgg().getLocation());
-			}
+			flyingEggs.put(eggId, e.getPlayer());
 		}
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.fertileEgg)) {
-			e.setHatching(false);
+			flyingFertileEggs.put(eggId, e.getPlayer());
 			Common.sendBar(e.getPlayer(), "You try hatching the Parrot egg...");
-			SpawnPets.newParrot(e.getPlayer(), e.getEgg().getLocation());
+
 		}
 	}
-	
+
+	@EventHandler
+	public void eggHit (ProjectileHitEvent hitEvent) {
+		UUID projectile = hitEvent.getEntity().getUniqueId();
+		if (flyingEggs.containsKey(projectile)) {
+			// handle regular egg
+			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getCfg().getInt("egg-change")) {
+				SpawnPets.newParrot(flyingEggs.get(projectile), hitEvent.getHitBlock().getLocation());
+			}
+		}
+		if (flyingFertileEggs.containsKey(projectile)) {
+			// handle fertile egg
+			SpawnPets.newParrot(flyingFertileEggs.get(projectile), hitEvent.getHitBlock().getLocation());
+		}
+	}
 /*
 	@EventHandler
 	public void onHatch (CreatureSpawnEvent e) {
@@ -72,7 +90,7 @@ public class MyListener implements Listener {
 
 	@EventHandler
 	public void onDispenseEgg (BlockDispenseEvent e) {
-		// todo add config option here
+		// TODO add config option here
 		if ((e.getItem() != null) && (e.getItem().getType() != Material.AIR)) {
 			if (e.getItem().getType() == Material.EGG) {
 				Dispenser dispenser = (Dispenser) e.getBlock().getState();

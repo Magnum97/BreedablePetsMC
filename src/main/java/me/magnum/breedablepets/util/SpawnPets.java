@@ -27,6 +27,7 @@
 package me.magnum.breedablepets.util;
 
 import me.magnum.Breedable;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -45,9 +46,10 @@ public class SpawnPets {
 	
 	public static void newParrot (Player player, Location location) {
 		World world = player.getWorld();
+		location = world.getHighestBlockAt(location).getLocation().add(0,1,0);
 		Parrot parrot = (Parrot) world.spawnEntity(location, EntityType.PARROT);
 		parrot.setTamed(Breedable.getCfg().getBoolean("hatches.tamed"));
-		parrot.setHealth(1); //todo add to config
+		parrot.setHealth(1); // TODO add to config
 		parrot.setVariant(Parrot.Variant.RED);
 		if (parrot.isTamed()) {
 			parrot.setOwner(player);
