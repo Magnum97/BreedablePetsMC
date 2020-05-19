@@ -29,6 +29,8 @@ jobs:
             * Add workflows for issue and release creation.
             * Refactored main class
             * Change how plugin watches for eggs to hatch
+            * Change ProjectileHitEvent: getBlock location -> getEnttity location
+            * Changed Config library to Lightning Storage
           files: build/libs/BreedablePets-${{ steps.get_version.outputs.VERSION }}.jar
           gzip: folders
 

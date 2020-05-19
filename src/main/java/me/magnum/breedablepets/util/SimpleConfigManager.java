@@ -9,12 +9,11 @@ package me.magnum.breedablepets.util;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class SimpleConfigManager {
 
-	private final JavaPlugin plugin;
+	private JavaPlugin plugin;
 
 	/**
 	 * Manage custom configurations and files
@@ -29,7 +28,7 @@ public class SimpleConfigManager {
 	 * @param filePath - Path to file
 	 * @return - New SimpleConfig
 	 */
-	public SimpleConfig getNewConfig (String filePath, String[] header,boolean useDefaults) {
+	public SimpleConfig getNewConfig (String filePath, String[] header) {
 
 		File file = this.getConfigFile(filePath);
 
@@ -42,7 +41,7 @@ public class SimpleConfigManager {
 
 		}
 
-		SimpleConfig config = new SimpleConfig(this.getConfigContent(filePath), file, this.getCommentsNum(file), useDefaults,plugin);
+		SimpleConfig config = new SimpleConfig(this.getConfigContent(filePath), file, this.getCommentsNum(file), plugin);
 		return config;
 
 	}
@@ -56,7 +55,7 @@ public class SimpleConfigManager {
 	 * @return - New SimpleConfig
 	 */
 	public SimpleConfig getNewConfig (String filePath) {
-		return this.getNewConfig(filePath, null,false);
+		return this.getNewConfig(filePath, null);
 	}
 
 	/**
@@ -230,6 +229,7 @@ public class SimpleConfigManager {
 			String config = whole.toString();
 			InputStream configStream = new ByteArrayInputStream(config.getBytes(StandardCharsets.UTF_8));
 			InputStreamReader configStreamReader = new InputStreamReader(configStream);
+
 			reader.close();
 			return configStreamReader;
 

@@ -26,52 +26,74 @@
 package me.magnum;
 
 import co.aikar.commands.BukkitCommandManager;
+import de.leonhard.storage.Yaml;
+import de.leonhard.storage.sections.FlatFileSection;
 import lombok.Getter;
+import lombok.SneakyThrows;
+import me.magnum.breedablepets.Command;
 import me.magnum.breedablepets.listeners.BreedListener;
 import me.magnum.breedablepets.listeners.EggListener;
 import me.magnum.breedablepets.util.Common;
-import me.magnum.breedablepets.util.SimpleConfig;
-import me.magnum.breedablepets.util.SimpleConfigManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@kr.entree.spigradle.Plugin
-public class Breedable extends JavaPlugin { // TODO Refactor & rename class
+public class Breedable extends JavaPlugin {
 
 	@Getter
 	private static Breedable plugin;
+	//	@Getter
+//	private SimpleConfig cfg;
 	@Getter
-	private static SimpleConfig cfg;
-	@Getter
-	private SimpleConfigManager configManager;
+	private Yaml cfg;
 
 	@Override
 	public void onEnable () {
 		plugin = this;
-		configManager = new SimpleConfigManager(plugin);
-		Common.log("Loading breed-able pets...");
-		cfg = configManager.getNewConfig("config.yml");
-		//		cfg = new SimpleConfig("config.yml", plugin);
-		// Remain.setPlugin(plugin);  // TODO Add compatability
-		plugin.getServer().getPluginManager().registerEvents(new MyListener(), plugin);
-		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), plugin);
+		setupConfig();
+//		Remain.setPlugin(plugin);  // TODO Add compatability
+		plugin.getServer().getPluginManager().registerEvents(new EggListener(), this);
+		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), this);
 		registerCommands();
+	}
+
+	private void setupConfig () {
+		cfg = new Yaml("settings.yml", getDataFolder().toString(), getResource("settings.yml"));
+		String[] header = {"Config file for BreedablePets",
+				"by Magnum1997",
+				"This should be self-explanatory. I tried to comment settings.",
+				"For problems, questions, or feedback please visit",
+				"https://github.com/Magnum97/BreedablePetsMC/issues"};
+		cfg.framedHeader(header);
+		// Set defaults
+		cfg.setDefault("parrots.hatch-chance", 10);
+		cfg.setDefault("parrot.egg-chance", 25);
+		cfg.setDefault("paired-egg-chance", 20);
+		cfg.setDefault("fertile-egg-chance", 30);
+		cfg.setDefault("hatch-chance", 10);
+		cfg.setDefault("rare-chance", 1);
+		FlatFileSection modifiers = cfg.getSection("modifiers");
+		modifiers.setDefault("wheat", 10);
+		modifiers.setDefault("beetroot", 20);
+		modifiers.setDefault("pumpkin", 30);
+		modifiers.setDefault("melon", 30);
+		modifiers.setDefault("glistering-melon", 100);
 	}
 
 	@SuppressWarnings ("deprecation")
 	private void registerCommands () {
 		BukkitCommandManager commandManager = new BukkitCommandManager(plugin);
-		commandManager.registerCommand(new me.magnum.breedablepets.Command());
+		commandManager.registerCommand(new Command());
 		commandManager.enableUnstableAPI("help");
 	}
 
 
 	@Override
 	public void onDisable () {
-		Common.log("Disabling Breedable pets.");
+		Common.log("Disabling Breed-able pets.");
 		// Remain.setPlugin(null);
+		//		cfg.saveConfig();
 		cfg = null;
 		plugin = null;
 	}
