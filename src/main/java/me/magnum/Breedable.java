@@ -28,7 +28,7 @@ package me.magnum;
 import co.aikar.commands.BukkitCommandManager;
 import lombok.Getter;
 import me.magnum.breedablepets.listeners.BreedListener;
-import me.magnum.breedablepets.listeners.MyListener;
+import me.magnum.breedablepets.listeners.EggListener;
 import me.magnum.breedablepets.util.Common;
 import me.magnum.breedablepets.util.SimpleConfig;
 import me.magnum.breedablepets.util.SimpleConfigManager;

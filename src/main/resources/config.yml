@@ -1,4 +1,4 @@
-# base chance that feeding a _tamed_ parrot will produce an egg.
+# Base chance that feeding a _tamed_ parrot will produce an egg.
 egg-chance: 10
 # chance that feeding with a mate nearby produces an egg
 paired-egg-chance: 20

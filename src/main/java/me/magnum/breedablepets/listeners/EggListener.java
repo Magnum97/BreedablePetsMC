@@ -29,6 +29,7 @@ import me.magnum.Breedable;
 import me.magnum.breedablepets.util.Common;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
 import org.bukkit.entity.Player;
@@ -44,14 +45,17 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MyListener implements Listener {
+public class EggListener implements Listener {
 
-	private static HashMap <UUID, Player> flyingEggs = new HashMap <>();
-	private static HashMap <UUID, Player> flyingFertileEggs = new HashMap <>();
+	private static final HashMap <UUID, Player> flyingEggs = new HashMap <>();
+	private static final HashMap <UUID, Player> flyingFertileEggs = new HashMap <>();
 	private final ItemUtil itemsAPI = new ItemUtil();
 
 	@EventHandler (priority = EventPriority.HIGH)
 	public void onEggThrow (PlayerEggThrowEvent e) {
+		ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
+		if (! hand.isSimilar(itemsAPI.regEgg) || hand.isSimilar(itemsAPI.fertileEgg)) return;
+
 		UUID eggId = e.getEgg().getUniqueId();
 		e.setHatching(false);
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.regEgg)) {
@@ -61,22 +65,28 @@ public class MyListener implements Listener {
 		if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(itemsAPI.fertileEgg)) {
 			flyingFertileEggs.put(eggId, e.getPlayer());
 			Common.sendBar(e.getPlayer(), "You try hatching the Parrot egg...");
-
 		}
 	}
 
 	@EventHandler
 	public void eggHit (ProjectileHitEvent hitEvent) {
 		UUID projectile = hitEvent.getEntity().getUniqueId();
+		Location loc = hitEvent.getEntity().getLocation();
 		if (flyingEggs.containsKey(projectile)) {
 			// handle regular egg
-			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getCfg().getInt("egg-change")) {
-				SpawnPets.newParrot(flyingEggs.get(projectile), hitEvent.getHitBlock().getLocation());
+			// todo debugging
+			int random = ThreadLocalRandom.current().nextInt(100);
+			int chance = (int) Breedable.getPlugin().getCfg().get("hatch-chance");
+			Breedable.getPlugin().getServer().broadcastMessage("Random: " + random + " Chance: " + chance);
+			if (random < chance) {
+				SpawnPets.newParrot(flyingEggs.get(projectile), loc);
 			}
+			flyingEggs.remove(projectile);
 		}
 		if (flyingFertileEggs.containsKey(projectile)) {
 			// handle fertile egg
-			SpawnPets.newParrot(flyingFertileEggs.get(projectile), hitEvent.getHitBlock().getLocation());
+			SpawnPets.newParrot(flyingFertileEggs.get(projectile), loc);
+			flyingFertileEggs.remove(projectile);
 		}
 	}
 /*
