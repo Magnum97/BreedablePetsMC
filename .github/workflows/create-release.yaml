@@ -31,13 +31,5 @@ jobs:
             * Change how plugin watches for eggs to hatch
             * Change ProjectileHitEvent: getBlock location -> getEnttity location
             * Changed Config library to Lightning Storage
-          files: build/libs/BreedablePets-${{ steps.get_version.outputs.VERSION }}.jar
+          files: build/libs/BreedablePets.jar
           gzip: folders
-
-      - name: Send file JAR to discord channel
-        uses: sinshutu/upload-to-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        with:
-          args: build/libs/BreedablePets-${{ steps.get_version.outputs.VERSION }}.jar
-#          args: README.md
