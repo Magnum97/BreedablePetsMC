@@ -35,7 +35,9 @@ import me.magnum.breedablepets.util.SpawnPets;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandAlias("breedablepet|bp")
+// TODO refine permissions
+// ie. breedable.command breedable.command.parrot breedable.command.reload
+@CommandAlias("breedablepets|bp")
 public class Command extends BaseCommand {
 	
 	@HelpCommand
@@ -45,7 +47,7 @@ public class Command extends BaseCommand {
 	
 	@Subcommand("parrotegg")
 	@Description("Get a parrot egg")
-	@CommandPermission("breedable.parrot.egg")
+	@CommandPermission("breedablepets.command.parrotegg")
 	public void onCommand (CommandSender sender, @Default("false") String fertile) {
 		ItemUtil util = new ItemUtil();
 		Player p = (Player) sender;
@@ -63,7 +65,7 @@ public class Command extends BaseCommand {
 	@Subcommand("reload")
 	@CommandPermission("breedable.reload")
 	public void onReload (CommandSender sender) {
-		Breedable.getCfg().reloadConfig();
+		Breedable.getPlugin().getCfg().forceReload();
 	}
 	
 	@CommandAlias("sp")
