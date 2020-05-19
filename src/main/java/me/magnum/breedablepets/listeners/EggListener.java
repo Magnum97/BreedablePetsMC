@@ -74,7 +74,6 @@ public class EggListener implements Listener {
 		Location loc = hitEvent.getEntity().getLocation();
 		if (flyingEggs.containsKey(projectile)) {
 			// handle regular egg
-			// todo debugging
 			int random = ThreadLocalRandom.current().nextInt(100);
 			int chance = (int) Breedable.getPlugin().getCfg().get("hatch-chance");
 			Breedable.getPlugin().getServer().broadcastMessage("Random: " + random + " Chance: " + chance);

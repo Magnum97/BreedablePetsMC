@@ -52,7 +52,7 @@ public class Breedable extends JavaPlugin {
 	public void onEnable () {
 		plugin = this;
 		setupConfig();
-//		Remain.setPlugin(plugin);  // TODO Add compatability
+//		Remain.setPlugin(plugin);  // TODO Add backwards compatibility
 		plugin.getServer().getPluginManager().registerEvents(new EggListener(), this);
 		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), this);
 		registerCommands();
