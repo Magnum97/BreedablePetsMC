@@ -32,7 +32,8 @@ repositories {
 dependencies {
     compileOnly spigot('1.15.2')
     implementation 'fr.mrmicky:FastParticles:1.2.0'
-    implementation  files ('/home/rich/.m2/repository/com/github/javafactorydev/lightningstorage/3.1.1-SNAPSHOT/lightningstorage-3.1.1-SNAPSHOT.jar')
+//    implementation  files ('/home/rich/.m2/repository/com/github/javafactorydev/lightningstorage/3.1.1-SNAPSHOT/lightningstorage-3.1.1-SNAPSHOT.jar')
+    implementation 'com.github.Magnum97:LightningStorage:frame-header-SNAPSHOT'
 //    implementation  'com.github.JavaFactoryDev:LightningStorage:3.1.1-SNAPSHOT'
     implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
 //    implementation 'com.github.kangarko:Foundation:5.3.8@jar' // Kangerko's Foundation library
