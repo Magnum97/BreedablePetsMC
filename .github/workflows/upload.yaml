@@ -17,8 +17,8 @@ jobs:
         uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
         with:
           args: build
-      - uses: actions/upload-artifact@v1
       - name: "Upload artifact"
+      - uses: actions/upload-artifact@v1
         with:
           name: BreedablePets
           path: build/libs/
