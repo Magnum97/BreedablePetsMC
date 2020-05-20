@@ -29,7 +29,6 @@ import co.aikar.commands.BukkitCommandManager;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import me.magnum.breedablepets.Command;
 import me.magnum.breedablepets.listeners.BreedListener;
 import me.magnum.breedablepets.listeners.EggListener;
