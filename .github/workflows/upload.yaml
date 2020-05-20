@@ -1,0 +1,28 @@
+name: "Build and upload artifact"
+on:
+  push:
+    branches:
+      - 'dev'
+defaults:
+  run:
+    shell: bash
+    working-directory: $GITHUB_WORKSPACE
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout and build repository"
+        uses: actions/checkout@v2
+      - name: "Build JAR with gradle wrapper"
+        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
+        with:
+          args: shadowJar
+  upload:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      uses: actions/upload-artifact@v1
+        with:
+          name: BreedablePets
+          path: $GITHUB_WORKSPACE/build/libs/BreedablePets.jar
+
