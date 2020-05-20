@@ -18,7 +18,8 @@ jobs:
         with:
           args: build
       - uses: actions/upload-artifact@v1
+      - name: "Upload artifact"
         with:
           name: BreedablePets
-          path: build/libs/BreedablePets.jar
+          path: build/libs/
 
