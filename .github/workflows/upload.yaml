@@ -17,10 +17,6 @@ jobs:
         uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
         with:
           args: build
-  upload:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/upload-artifact@v1
         with:
           name: BreedablePets
