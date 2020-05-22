@@ -20,7 +20,8 @@ jobs:
 
       - name: Generate the artifacts
         uses: skx/github-action-build@master
-          args: './gradlew'
+        with:
+          builder: './gradlew'
 
       - name: Upload the artifacts
         uses: skx/github-action-publish-binaries@master
