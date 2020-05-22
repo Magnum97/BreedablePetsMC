@@ -22,5 +22,5 @@ jobs:
       - name: "Upload artifact"
         uses: actions/upload-artifact@v1
         with:
-          name: rc-jars
+          name: BreedablePets-JAR
           path: build/libs/
