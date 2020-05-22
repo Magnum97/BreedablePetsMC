@@ -17,8 +17,8 @@ jobs:
 
       - name: Generate the artifacts
         uses: skx/github-action-build@master
-          args: ./gradlew
-          
+          args: './gradlew'
+
   release:
     needs: build
     runs-on: ubuntu-latest
