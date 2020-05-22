@@ -20,20 +20,20 @@ jobs:
           args: build
   release:
     needs: build
-      runs-on: ubuntu-latest
-        steps:
-        - uses: meeDamian/github-release@2.0
-          with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            body: |
-              Changelog for ${{ steps.get_version.outputs.VERSION }} :
-              * Change Materials to match Minecraft 1.15
-              * Integrated code from local API
-              * Add workflows for issue and release creation.
-              * Refactored main class
-              * Change how plugin watches for eggs to hatch
-              * Change ProjectileHitEvent: getBlock location -> getEnttity location
-              * Changed Config library to Lightning Storage
-            files: build/libs/BreedablePets.jar
-            gzip: folders
+    runs-on: ubuntu-latest
+    steps:
+      - uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            Changelog for ${{ steps.get_version.outputs.VERSION }} :
+            * Change Materials to match Minecraft 1.15
+            * Integrated code from local API
+            * Add workflows for issue and release creation.
+            * Refactored main class
+            * Change how plugin watches for eggs to hatch
+            * Change ProjectileHitEvent: getBlock location -> getEnttity location
+            * Changed Config library to Lightning Storage
+          files: build/libs/BreedablePets.jar
+          gzip: folders
 
