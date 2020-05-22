@@ -11,7 +11,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout repository"
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+        - name: "Checkout repository"
         uses: actions/checkout@v2
 
       - name: "Build project"
@@ -25,5 +29,5 @@ jobs:
       - name: "Upload artifact"
         uses: actions/upload-artifact@v1
         with:
-          name: BreedablePets-JAR
+          name: BreedablePets-${{ steps.get_version.outputs.VERSION }}
           path: build/libs/
