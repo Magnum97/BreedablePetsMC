@@ -1,4 +1,4 @@
-name: "Workflow"
+name: "Manage TODO <-> Issue"
 on: ["push"]
 jobs:
   yaml-to-list:

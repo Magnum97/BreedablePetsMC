@@ -1,6 +1,6 @@
 # This workflow will create a release on v-tag push
 
-name: Create release
+name: "Create release"
 on:
   push:
     # Sequence of patterns matched against refs/tags
