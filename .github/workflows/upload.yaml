@@ -15,19 +15,16 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
-        - name: "Checkout repository"
-        uses: actions/checkout@v2
+      - name: Checkout the repository
+        uses: actions/checkout@master
 
-      - name: "Build project"
-        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
+      - name: Generate the artifacts
+        uses: skx/github-action-build@master
+          args: ./gradlew
+
+      - name: Upload the artifacts
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: build
-  upload:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Upload artifact"
-        uses: actions/upload-artifact@v1
-        with:
-          name: BreedablePets-${{ steps.get_version.outputs.VERSION }}
-          path: build/libs/
+          args: 'build/libs/BreedablePets.jar'

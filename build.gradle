@@ -53,6 +53,7 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
 shadowJar {
     classifier = null // remove -all from end of jar
+    version = null
 }
 spigot {
     authors = ['Magnum1997']

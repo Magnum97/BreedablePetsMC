@@ -14,10 +14,11 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - uses: actions/checkout@v2
-      - name: Build project
-        uses: OrangeLabs-moe/gradle-actions@v5.0-openjdk-8
-        with:
-          args: build
+
+      - name: Generate the artifacts
+        uses: skx/github-action-build@master
+          args: ./gradlew
+          
   release:
     needs: build
     runs-on: ubuntu-latest
