@@ -6,7 +6,7 @@ name: Create or update release
 on:
   push:
     branches:
-      - 'release*'
+      - 'release/**'
 
 jobs:
   build:
