@@ -1,37 +1,38 @@
-# This workflow will create a release on v-tag push
+# This work flow will build project with Gradle wrapper,
+# create a release, and upload contents of ./build/libs/
+# to the release.
+name: Create or update release
 
-name: "Create release"
 on:
   push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branches: [ release ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - uses: actions/checkout@v2
 
-      - name: Setup Java
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/heads/release/}
+
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: 1.8
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Gradle build task
+        run: ./gradlew build
 
-      - name: Generate the artifacts
-        uses: skx/github-action-build@master
-        with:
-          builder: './gradlew'
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: meeDamian/github-release@2.0
+      - name: Create release, update, and upload assets
+        uses: meeDamian/github-release@v2.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: true
+          draft: true
+          allow_override: true
           body: |
             Changelog for ${{ steps.get_version.outputs.VERSION }} :
             * Change Materials to match Minecraft 1.15
@@ -41,6 +42,5 @@ jobs:
             * Change how plugin watches for eggs to hatch
             * Change ProjectileHitEvent: getBlock location -> getEnttity location
             * Changed Config library to Lightning Storage
-          files: build/libs/BreedablePets.jar
+          files: build/libs/*
           gzip: folders
-
