@@ -30,6 +30,7 @@ jobs:
       - name: Create release, update, and upload assets
         uses: meeDamian/github-release@v2.0.1
         with:
+          tag: ${{ steps.get_version.outputs.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
           draft: true
