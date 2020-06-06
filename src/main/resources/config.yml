@@ -1,6 +1,4 @@
-# Config for @NAME@ version @VERSION@
-version: @VERSION@
-# base chance that feeding a _tamed_ parrot will produce an egg.
+# Base chance that feeding a _tamed_ parrot will produce an egg.
 egg-chance: 10
 # chance that feeding with a mate nearby produces an egg
 paired-egg-chance: 20
@@ -13,7 +11,7 @@ rare-chance: 1
 # chance modifiers increase chance of eggs depending on what food you use
 # modifier of 0 does not change base chance
 
-# This is for future version todo Add food modifiers
+# This is for future version # TODO Add food modifiers
 modifier:
   wheat: 10
   beetroot: 20

@@ -28,13 +28,16 @@ package me.magnum.breedablepets;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import me.magnum.Breedable;
+import me.magnum.breedablepets.util.CheckSender;
 import me.magnum.breedablepets.util.ItemUtil;
 import me.magnum.breedablepets.util.SpawnPets;
-import me.magnum.lib.CheckSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandAlias("breedablepet|bp")
+// TODO refine permissions
+// ie. breedable.command breedable.command.parrot breedable.command.reload
+@CommandAlias("breedablepets|bp")
 public class Command extends BaseCommand {
 	
 	@HelpCommand
@@ -44,12 +47,12 @@ public class Command extends BaseCommand {
 	
 	@Subcommand("parrotegg")
 	@Description("Get a parrot egg")
-	@CommandPermission("breedable.parrot.egg")
+	@CommandPermission("breedablepets.command.parrotegg")
 	public void onCommand (CommandSender sender, @Default("false") String fertile) {
 		ItemUtil util = new ItemUtil();
 		Player p = (Player) sender;
 		
-		if (!CheckSender.isPlayer(sender)) {
+		if (! CheckSender.isPlayer(sender)) {
 			return;
 		}
 		if ((fertile.equalsIgnoreCase("fertile"))&& sender.hasPermission("breedable.parrot.fertile")) {
@@ -62,7 +65,7 @@ public class Command extends BaseCommand {
 	@Subcommand("reload")
 	@CommandPermission("breedable.reload")
 	public void onReload (CommandSender sender) {
-		Main.cfg.reloadConfig();
+		Breedable.getPlugin().getCfg().forceReload();
 	}
 	
 	@CommandAlias("sp")
