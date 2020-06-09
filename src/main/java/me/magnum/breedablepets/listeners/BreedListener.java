@@ -151,6 +151,17 @@ public class BreedListener implements Listener {
 
 	}
 
+	private void doCoolDown(UUID uniqueId) {
+		onCoolDown.add(uniqueId);
+		BukkitRunnable cooldown = new BukkitRunnable() {
+			@Override
+			public void run() {
+				onCoolDown.remove(uniqueId);
+			}
+		};
+		cooldown.runTaskLater(plugin,20 * 15);
+	}
+
 	// TODO get length of configuration section and make array of item/chance pairs.
 	private Integer foodCalc (Entity target, Material type) {
 		int chance = 0;
