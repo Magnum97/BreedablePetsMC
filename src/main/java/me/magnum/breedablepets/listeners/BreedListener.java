@@ -25,9 +25,11 @@
  */
 package me.magnum.breedablepets.listeners;
 
+import de.leonhard.storage.Yaml;
 import fr.mrmicky.fastparticle.FastParticle;
 import fr.mrmicky.fastparticle.ParticleType;
 import me.magnum.Breedable;
+import me.magnum.breedablepets.util.Common;
 import me.magnum.breedablepets.util.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,15 +40,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BreedListener implements Listener {
 
 	private final ItemUtil items = new ItemUtil();
-	//	private final SimpleConfig cfg = Main.getCfg();
+	private final Breedable plugin = Breedable.getPlugin();
+	private final Yaml cfg = plugin.getCfg();
+	private final String pre = plugin.getPre();
+	private final HashSet <UUID> onCoolDown = new HashSet <>();
 
 	public BreedListener () {
 	}
@@ -57,6 +62,11 @@ public class BreedListener implements Listener {
 		Entity target = pie.getRightClicked();
 		Material hand = player.getInventory().getItemInMainHand().getType();
 		if (target.getType() != EntityType.PARROT) {
+			return;
+		}
+		if (onCoolDown.contains(target.getUniqueId())) {
+			Common.tell(player, pre + "This parrot needs rest before it can lay another egg.");
+			pie.setCancelled(true);
 			return;
 		}
 		Tameable tamed = (Tameable) target;
@@ -73,6 +83,7 @@ public class BreedListener implements Listener {
 				Material.MELON,
 				Material.PUMPKIN_SEEDS,
 				Material.GLISTERING_MELON_SLICE).contains(hand)) {
+			pie.setCancelled(true);
 			chanceModifier = foodCalc(target, hand); // TODO increase chance of egg/fertile egg by type of food.
 		}
 		else {
@@ -93,25 +104,23 @@ public class BreedListener implements Listener {
 
 		for (Entity entity : nearby) {
 			if (entity.getType() == target.getType()) {
+				Tameable thisMate = (Tameable) entity;
+				if ((thisMate.isTamed()) &&
+						(Objects.equals(thisMate.getOwner(), (tamed.getOwner()))) &&
+						(! onCoolDown.contains(thisMate.getUniqueId()))) {
 				hasMate = true;
 				mate = entity;
+				doCoolDown(mate.getUniqueId());
+				break;
+				}
 			}
 		}
 		
-/* // TODO find nearest parrot
-		for (int i = 0; i < nearby.size(); i++) {
-			if (nearby.get(i).getType().equals(EntityType.PARROT)){
-				hasMate=true;
-				mate=nearby.get(i);
-				break;
-			}
-		}
-*/
-
 		// int random = new Random().nextInt(100);
 		double x = target.getLocation().getX();
 		double y = target.getLocation().getY() + 1;
 		double z = target.getLocation().getZ();
+		doCoolDown(target.getUniqueId());
 		if (hasMate) {
 			if (ThreadLocalRandom.current().nextInt(100) < (Breedable.getPlugin().getCfg().getInt("fertile-egg-chance"))) {
 				w.dropItemNaturally(loc, items.regEgg.clone());
