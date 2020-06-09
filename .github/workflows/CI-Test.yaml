@@ -2,8 +2,7 @@ name: CI Test
 
 on:
   push:
-    ignore-branches:
-      - 'dev'
+    branches: [ dev ]
   pull_request:
     branches: [ master, dev ]
 
