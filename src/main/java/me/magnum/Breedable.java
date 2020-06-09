@@ -33,6 +33,7 @@ import me.magnum.breedablepets.Command;
 import me.magnum.breedablepets.listeners.BreedListener;
 import me.magnum.breedablepets.listeners.EggListener;
 import me.magnum.breedablepets.util.Common;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -46,11 +47,16 @@ public class Breedable extends JavaPlugin {
 //	private SimpleConfig cfg;
 	@Getter
 	private Yaml cfg;
+	@Getter
+	private String pre;
 
 	@Override
 	public void onEnable () {
 		plugin = this;
 		setupConfig();
+		pre = "&7[&6" + plugin.getName() + "&7] ";
+		pre = ChatColor.translateAlternateColorCodes('&', pre);
+//		cfg.getString("prefix");
 //		Remain.setPlugin(plugin);  // TODO Add backwards compatibility
 		plugin.getServer().getPluginManager().registerEvents(new EggListener(), this);
 		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), this);
