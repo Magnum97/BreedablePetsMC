@@ -159,7 +159,7 @@ public class BreedListener implements Listener {
 				onCoolDown.remove(uniqueId);
 			}
 		};
-		cooldown.runTaskLater(plugin,20 * 15);
+		cooldown.runTaskLater(plugin,20 * Breedable.getPlugin().getCfg().getOrSetDefault("cooldown.parrot",15));
 	}
 
 	// TODO get length of configuration section and make array of item/chance pairs.
