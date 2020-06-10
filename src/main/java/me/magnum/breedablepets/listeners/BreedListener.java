@@ -28,8 +28,10 @@ package me.magnum.breedablepets.listeners;
 import de.leonhard.storage.Yaml;
 import fr.mrmicky.fastparticle.FastParticle;
 import fr.mrmicky.fastparticle.ParticleType;
+import lombok.SneakyThrows;
 import me.magnum.Breedable;
 import me.magnum.breedablepets.util.Common;
+import me.magnum.breedablepets.util.DataWorks;
 import me.magnum.breedablepets.util.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,11 +58,15 @@ public class BreedListener implements Listener {
 	public BreedListener () {
 	}
 
+	@SneakyThrows
 	@EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onFeed (PlayerInteractEntityEvent pie) {
 		Player player = pie.getPlayer();
 		Entity target = pie.getRightClicked();
 		Material hand = player.getInventory().getItemInMainHand().getType();
+		HashMap <Material, Integer> map;
+		DataWorks dataWorks = new DataWorks();
+		map = dataWorks.getMaterialsMap();
 		if (target.getType() != EntityType.PARROT) {
 			return;
 		}
@@ -78,22 +84,21 @@ public class BreedListener implements Listener {
 		if (pie.getHand() != EquipmentSlot.HAND) {
 			return;
 		}
-		if (Arrays.asList(Material.BEETROOT_SEEDS,
-				Material.MELON_SEEDS,
-				Material.MELON,
-				Material.PUMPKIN_SEEDS,
-				Material.GLISTERING_MELON_SLICE).contains(hand)) {
-			pie.setCancelled(true);
-			chanceModifier = foodCalc(target, hand); // TODO increase chance of egg/fertile egg by type of food.
+		if (map.containsKey(hand)) {
+			chanceModifier = map.get(hand);
 		}
-		else {
+		else
 			return;
-		}
 		pie.setCancelled(true);
 		sitting.setSitting(true);
 		player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
+		int baseChance = Breedable.getPlugin().getCfg().getInt("egg-chance");
 
-		// Common.tell(player, "Base chance of egg: " + chanceModifier); // TODO remove before deploy
+				////////////////////////  DEBUG CODE ////////////////////////////
+		Common.tell(player, "Base chance of egg: " + baseChance); // TODO remove before deploy
+		Common.tell(player, "Food modifier     : " + chanceModifier);
+		Common.tell(player, "Base chance of egg: " + (baseChance + chanceModifier));
+				/////////////////////////////////////////////////////////////////
 
 		List <Entity> nearby = target.getNearbyEntities(5, 2, 5);
 
@@ -115,7 +120,7 @@ public class BreedListener implements Listener {
 				}
 			}
 		}
-		
+
 		// int random = new Random().nextInt(100);
 		double x = target.getLocation().getX();
 		double y = target.getLocation().getY() + 1;
