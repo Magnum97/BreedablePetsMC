@@ -41,7 +41,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Parrot;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
@@ -50,13 +49,15 @@ public class Breedable extends JavaPlugin {
 
 	@Getter
 	private static Breedable plugin;
+	@Getter
+	Logger log;
 	//	@Getter
 //	private SimpleConfig cfg;
 	@Getter
 	private Yaml cfg;
 	@Getter
 	private String pre;
-	@Getter Logger log;
+
 	@SneakyThrows
 	@Override
 	public void onEnable () {
@@ -80,16 +81,20 @@ public class Breedable extends JavaPlugin {
 				"https://github.com/Magnum97/BreedablePetsMC/issues"};
 		cfg.framedHeader(header);
 		// Set defaults
-		cfg.setDefault("parrot.egg-lay.base-chance", 50);
-		cfg.setDefault("parrot.egg-lay.mated-chance", 80);
-		cfg.setDefault("parrot.hatch.normal-egg", 10);
-		cfg.setDefault("parrot.hatch.fertile-egg", 95);
-		cfg.setDefault("parrot.hatch.same-color", true);
-		cfg.setDefault("parrot.hatch.same-color.color", Parrot.Variant.RED);
-		if (materialsAreValid()){
-			 log.severe("Valid Material names can be found at " +
+//		cfg.setDefault("parrot.egg-lay.base-chance", 50);
+//		cfg.setDefault("parrot.egg-lay.mated-chance", 80);
+//		cfg.setDefault("parrot.hatch.normal-egg", 10);
+//		cfg.setDefault("parrot.hatch.fertile-egg", 95);
+//		cfg.setDefault("parrot.hatch.same-color", true);
+//		cfg.setDefault("parrot.hatch.same-color.color", Parrot.Variant.RED);
+		cfg.write();
+		boolean valid;
+		valid = materialsAreValid();
+		if (! valid) {
+			log.warning("Invalid materials in settings.yml");
+			log.severe("Valid Material names can be found at " +
 					"https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html");
-			 log.severe("Plugin is disabled");
+			log.severe("Plugin is disabled");
 			plugin.setEnabled(false);
 		}
 //		cfg.setDefault("parrot.rare-chance", 1); // Unused currently - plan to allow rare colors.
@@ -98,17 +103,20 @@ public class Breedable extends JavaPlugin {
 	private boolean materialsAreValid () throws InvalidMaterialException {
 		FlatFileSection section = Breedable.getPlugin().getCfg().getSection("parrot.egg-lay.modifiers");
 
+		boolean isValid;
+
 		for (String material : section.keySet()) {
-			Logger log = Breedable.getPlugin().getLogger();
+			log.info("Setting " + material + " modifier to " + section.getInt(material));
+//			log.info("Found " + material + " in settings.yml");
 			try {
 				Material.valueOf(material);
-				log.info("Found " + material + " in settings.yml");
 			}
 			catch (IllegalArgumentException e) {
 				throw new InvalidMaterialException(material, "Invalid Material in settings.yml", e);
 			}
 		}
-		return false;
+		isValid = true;
+		return isValid;
 	}
 
 	@SuppressWarnings ("deprecation")

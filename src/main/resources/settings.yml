@@ -1,24 +1,3 @@
-rare-chance: 1
-
-# This is for future version # TODO Add food modifiers
-modifiers:
-  WHEAT_SEEDS: 10
-  BEETROOT_SEEDS: 20
-  PUMPKIN_SEEDS: 30
-  MELON_SEEDS: 30
-  MELON_SLICE: 50
-  GLISTERING_MELON_SLICE: 100
-# Options for parrots hatched from eggs
-# Custom name for hatches
-hatches:
-  # Will hatched parrots have a custom name?
-  named: false
-  # Custom name of hatchling
-  name: "&Bhatchling"
-  # True = hatchlings are tamed by player. False = parrot is wild & tameable
-  tamed: true
-
-
 parrot:
   egg-lay:
     # Base chance (percent) that feeding a _tamed_ parrot will produce an egg.
@@ -43,8 +22,8 @@ parrot:
     normal-egg: 10
     fertile-egg: 95
     same-color: true
-      color: RED
-      # Valid colors BLUE, CYAN, GRAY, GREEN, RED
+    color: RED
+    # Valid colors BLUE, CYAN, GRAY, GREEN, RED
 
 # Minimum time until next breeding attempt in seconds
 cooldown:
