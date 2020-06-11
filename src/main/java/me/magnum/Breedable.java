@@ -29,15 +29,22 @@ import co.aikar.commands.BukkitCommandManager;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import me.magnum.breedablepets.Command;
 import me.magnum.breedablepets.listeners.BreedListener;
 import me.magnum.breedablepets.listeners.EggListener;
 import me.magnum.breedablepets.util.Common;
+import me.magnum.breedablepets.util.DataWorks;
+import me.magnum.breedablepets.util.InvalidMaterialException;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Parrot;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Logger;
 
 public class Breedable extends JavaPlugin {
 
@@ -49,21 +56,22 @@ public class Breedable extends JavaPlugin {
 	private Yaml cfg;
 	@Getter
 	private String pre;
-
+	@Getter Logger log;
+	@SneakyThrows
 	@Override
 	public void onEnable () {
 		plugin = this;
-		setupConfig();
+		log = plugin.getLogger();
 		pre = "&7[&6" + plugin.getName() + "&7] ";
 		pre = ChatColor.translateAlternateColorCodes('&', pre);
-//		cfg.getString("prefix");
 //		Remain.setPlugin(plugin);  // TODO Add backwards compatibility
 		plugin.getServer().getPluginManager().registerEvents(new EggListener(), this);
 		plugin.getServer().getPluginManager().registerEvents(new BreedListener(), this);
 		registerCommands();
+		setupConfig();
 	}
 
-	private void setupConfig () {
+	private void setupConfig () throws InvalidMaterialException {
 		cfg = new Yaml("settings.yml", getDataFolder().toString(), getResource("settings.yml"));
 		String[] header = {"Config file for BreedablePets",
 				"by Magnum1997",
@@ -72,18 +80,35 @@ public class Breedable extends JavaPlugin {
 				"https://github.com/Magnum97/BreedablePetsMC/issues"};
 		cfg.framedHeader(header);
 		// Set defaults
-		cfg.setDefault("parrots.hatch-chance", 10);
-		cfg.setDefault("parrot.egg-chance", 25);
-		cfg.setDefault("paired-egg-chance", 20);
-		cfg.setDefault("fertile-egg-chance", 30);
-		cfg.setDefault("hatch-chance", 10);
-		cfg.setDefault("rare-chance", 1);
-		FlatFileSection modifiers = cfg.getSection("modifiers");
-		modifiers.setDefault("wheat", 10);
-		modifiers.setDefault("beetroot", 20);
-		modifiers.setDefault("pumpkin", 30);
-		modifiers.setDefault("melon", 30);
-		modifiers.setDefault("glistering-melon", 100);
+		cfg.setDefault("parrot.egg-lay.base-chance", 50);
+		cfg.setDefault("parrot.egg-lay.mated-chance", 80);
+		cfg.setDefault("parrot.hatch.normal-egg", 10);
+		cfg.setDefault("parrot.hatch.fertile-egg", 95);
+		cfg.setDefault("parrot.hatch.same-color", true);
+		cfg.setDefault("parrot.hatch.same-color.color", Parrot.Variant.RED);
+		if (materialsAreValid()){
+			 log.severe("Valid Material names can be found at " +
+					"https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html");
+			 log.severe("Plugin is disabled");
+			plugin.setEnabled(false);
+		}
+//		cfg.setDefault("parrot.rare-chance", 1); // Unused currently - plan to allow rare colors.
+	}
+
+	private boolean materialsAreValid () throws InvalidMaterialException {
+		FlatFileSection section = Breedable.getPlugin().getCfg().getSection("parrot.egg-lay.modifiers");
+
+		for (String material : section.keySet()) {
+			Logger log = Breedable.getPlugin().getLogger();
+			try {
+				Material.valueOf(material);
+				log.info("Found " + material + " in settings.yml");
+			}
+			catch (IllegalArgumentException e) {
+				throw new InvalidMaterialException(material, "Invalid Material in settings.yml", e);
+			}
+		}
+		return false;
 	}
 
 	@SuppressWarnings ("deprecation")
@@ -98,7 +123,9 @@ public class Breedable extends JavaPlugin {
 	public void onDisable () {
 		Common.log("Disabling Breed-able pets.");
 		// Remain.setPlugin(null);
-		//		cfg.saveConfig();
+		cfg.write();
+		DataWorks dw = new DataWorks();
+		dw.save();
 		cfg = null;
 		plugin = null;
 	}

@@ -1,0 +1,51 @@
+rare-chance: 1
+
+# This is for future version # TODO Add food modifiers
+modifiers:
+  WHEAT_SEEDS: 10
+  BEETROOT_SEEDS: 20
+  PUMPKIN_SEEDS: 30
+  MELON_SEEDS: 30
+  MELON_SLICE: 50
+  GLISTERING_MELON_SLICE: 100
+# Options for parrots hatched from eggs
+# Custom name for hatches
+hatches:
+  # Will hatched parrots have a custom name?
+  named: false
+  # Custom name of hatchling
+  name: "&Bhatchling"
+  # True = hatchlings are tamed by player. False = parrot is wild & tameable
+  tamed: true
+
+
+parrot:
+  egg-lay:
+    # Base chance (percent) that feeding a _tamed_ parrot will produce an egg.
+    base-chance: 10
+    # chance that feeding with a mate nearby produces an egg
+    mated-chance: 40
+    # chance that a mated pair will produce a fertile egg
+    fertile-chance: 50
+    # Chance modifiers increase chance of eggs depending on what food you use
+    # modifier of 0 does not change base chance. Ex: using MELON_SLICE chance is 60% (50 + 10)
+    # Use material names from https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+    modifiers:
+      WHEAT_SEEDS: 10
+      BEETROOT_SEEDS: 20
+      PUMPKIN_SEEDS: 30
+      MELON_SEEDS: 30
+      MELON_SLICE: 50
+      GLISTERING_MELON_SLICE: 100
+
+  # Chance of a parrot egg hatching
+  hatch:
+    normal-egg: 10
+    fertile-egg: 95
+    same-color: true
+      color: RED
+      # Valid colors BLUE, CYAN, GRAY, GREEN, RED
+
+# Minimum time until next breeding attempt in seconds
+cooldown:
+  parrot: 15
