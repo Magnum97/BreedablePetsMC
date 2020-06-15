@@ -54,7 +54,8 @@ public class EggListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGH)
 	public void onEggThrow (PlayerEggThrowEvent e) {
 		ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
-		if (! hand.isSimilar(itemsAPI.regEgg) || hand.isSimilar(itemsAPI.fertileEgg)) return;
+		if (! (hand.isSimilar(itemsAPI.regEgg) || hand.isSimilar(itemsAPI.fertileEgg)) )
+			return;
 
 		UUID eggId = e.getEgg().getUniqueId();
 		e.setHatching(false);
@@ -75,7 +76,7 @@ public class EggListener implements Listener {
 		if (flyingEggs.containsKey(projectile)) {
 			// handle regular egg
 			int random = ThreadLocalRandom.current().nextInt(100);
-			int chance = (int) Breedable.getPlugin().getCfg().get("hatch-chance");
+			int chance = Breedable.getPlugin().getCfg().getInt("parrot.hatch.normal-egg");
 			Breedable.getPlugin().getServer().broadcastMessage("Random: " + random + " Chance: " + chance);
 			if (random < chance) {
 				SpawnPets.newParrot(flyingEggs.get(projectile), loc);
@@ -84,7 +85,12 @@ public class EggListener implements Listener {
 		}
 		if (flyingFertileEggs.containsKey(projectile)) {
 			// handle fertile egg
-			SpawnPets.newParrot(flyingFertileEggs.get(projectile), loc);
+			int random = ThreadLocalRandom.current().nextInt(100);
+			int chance = Breedable.getPlugin().getCfg().getInt("parrot.hatch.fertile-egg");
+			Breedable.getPlugin().getServer().broadcastMessage("Random: " + random + " Chance: " + chance);
+			if (random < chance)
+				SpawnPets.newParrot(flyingFertileEggs.get(projectile), loc);
+
 			flyingFertileEggs.remove(projectile);
 		}
 	}
