@@ -41,6 +41,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Parrot;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
@@ -81,12 +82,12 @@ public class Breedable extends JavaPlugin {
 				"https://github.com/Magnum97/BreedablePetsMC/issues"};
 		cfg.framedHeader(header);
 		// Set defaults
-//		cfg.setDefault("parrot.egg-lay.base-chance", 50);
-//		cfg.setDefault("parrot.egg-lay.mated-chance", 80);
-//		cfg.setDefault("parrot.hatch.normal-egg", 10);
-//		cfg.setDefault("parrot.hatch.fertile-egg", 95);
-//		cfg.setDefault("parrot.hatch.same-color", true);
-//		cfg.setDefault("parrot.hatch.same-color.color", Parrot.Variant.RED);
+		cfg.setDefault("parrot.egg-lay.base-chance", 50);
+		cfg.setDefault("parrot.egg-lay.mated-chance", 80);
+		cfg.setDefault("parrot.hatch.normal-egg", 10);
+		cfg.setDefault("parrot.hatch.fertile-egg", 95);
+		cfg.setDefault("parrot.hatch.same-color", true);
+		cfg.setDefault("parrot.hatch.color", Parrot.Variant.RED);
 		cfg.write();
 		boolean valid;
 		valid = materialsAreValid();
