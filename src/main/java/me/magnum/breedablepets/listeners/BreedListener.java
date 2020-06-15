@@ -46,6 +46,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 public class BreedListener implements Listener {
 
@@ -92,13 +93,17 @@ public class BreedListener implements Listener {
 		pie.setCancelled(true);
 		sitting.setSitting(true);
 		player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-		int baseChance = Breedable.getPlugin().getCfg().getInt("egg-chance");
+		int baseChance = Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.base-chance");
+		int matedChance = Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.mated-chance");
+		int finalChance = baseChance + chanceModifier;
 
-				////////////////////////  DEBUG CODE ////////////////////////////
-		Common.tell(player, "Base chance of egg: " + baseChance); // TODO remove before deploy
-		Common.tell(player, "Food modifier     : " + chanceModifier);
-		Common.tell(player, "Base chance of egg: " + (baseChance + chanceModifier));
-				/////////////////////////////////////////////////////////////////
+		////////////////////////  DEBUG CODE ////////////////////////////
+		Logger log = plugin.getLogger();
+		log.info("Base chance of egg : " + baseChance);
+		log.info("Food modifier      : " + chanceModifier);
+		log.info("Final chance       : " + finalChance);
+		log.info("Fertile chance     : " + matedChance);
+		/////////////////////////////////////////////////////////////////
 
 		List <Entity> nearby = target.getNearbyEntities(5, 2, 5);
 
@@ -113,30 +118,35 @@ public class BreedListener implements Listener {
 				if ((thisMate.isTamed()) &&
 						(Objects.equals(thisMate.getOwner(), (tamed.getOwner()))) &&
 						(! onCoolDown.contains(thisMate.getUniqueId()))) {
-				hasMate = true;
-				mate = entity;
+					hasMate = true;
+					mate = entity;
 				doCoolDown(mate.getUniqueId());
-				break;
+					break;
 				}
 			}
 		}
-
-		// int random = new Random().nextInt(100);
 		double x = target.getLocation().getX();
 		double y = target.getLocation().getY() + 1;
 		double z = target.getLocation().getZ();
 		doCoolDown(target.getUniqueId());
+		int random = ThreadLocalRandom.current().nextInt(100);
 		if (hasMate) {
-			if (ThreadLocalRandom.current().nextInt(100) < (Breedable.getPlugin().getCfg().getInt("fertile-egg-chance"))) {
-				w.dropItemNaturally(loc, items.regEgg.clone());
-				// w.dropItemNaturally(loc, items.fertileEgg.clone());  // TODO To be fertile egg - disabled until single throw bug fixed
+			if (random < matedChance + chanceModifier) {
+				int r2 = ThreadLocalRandom.current().nextInt(100);
+				boolean fertile = r2 < Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.fertile-chance:");
+
+				if (fertile)
+					w.dropItemNaturally(loc, items.fertileEgg.clone());
+				else
+					w.dropItemNaturally(loc, items.regEgg.clone());
+
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
 				FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
 				FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 			}
 			else {
-				if (ThreadLocalRandom.current().nextInt(1, 101) < Breedable.getPlugin().getCfg().getInt("egg-chance")) {
+				if (random < finalChance) {
 					w.dropItemNaturally(loc, items.regEgg.clone());
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
@@ -147,7 +157,7 @@ public class BreedListener implements Listener {
 
 		}
 		else {
-			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getPlugin().getCfg().getInt("egg-change")) {
+			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.base-chance")) {
 				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3, x, y, z);
 				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());
@@ -156,15 +166,15 @@ public class BreedListener implements Listener {
 
 	}
 
-	private void doCoolDown(UUID uniqueId) {
+	private void doCoolDown (UUID uniqueId) {
 		onCoolDown.add(uniqueId);
 		BukkitRunnable cooldown = new BukkitRunnable() {
 			@Override
-			public void run() {
+			public void run () {
 				onCoolDown.remove(uniqueId);
 			}
 		};
-		cooldown.runTaskLater(plugin,20 * Breedable.getPlugin().getCfg().getOrSetDefault("cooldown.parrot",15));
+		cooldown.runTaskLater(plugin, 20 * Breedable.getPlugin().getCfg().getOrSetDefault("cooldown.parrot", 15));
 	}
 
 	// TODO get length of configuration section and make array of item/chance pairs.

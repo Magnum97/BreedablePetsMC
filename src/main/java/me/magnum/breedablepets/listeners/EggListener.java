@@ -77,7 +77,6 @@ public class EggListener implements Listener {
 			// handle regular egg
 			int random = ThreadLocalRandom.current().nextInt(100);
 			int chance = Breedable.getPlugin().getCfg().getInt("parrot.hatch.normal-egg");
-			Breedable.getPlugin().getServer().broadcastMessage("Random: " + random + " Chance: " + chance);
 			if (random < chance) {
 				SpawnPets.newParrot(flyingEggs.get(projectile), loc);
 			}
@@ -87,14 +86,13 @@ public class EggListener implements Listener {
 			// handle fertile egg
 			int random = ThreadLocalRandom.current().nextInt(100);
 			int chance = Breedable.getPlugin().getCfg().getInt("parrot.hatch.fertile-egg");
-			Breedable.getPlugin().getServer().broadcastMessage("Random: " + random + " Chance: " + chance);
 			if (random < chance)
 				SpawnPets.newParrot(flyingFertileEggs.get(projectile), loc);
 
 			flyingFertileEggs.remove(projectile);
 		}
 	}
-/*
+/*  
 	@EventHandler
 	public void onHatch (CreatureSpawnEvent e) {
 		if (e.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.DISPENSE_EGG)) {
