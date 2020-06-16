@@ -52,8 +52,6 @@ public class Breedable extends JavaPlugin {
 	private static Breedable plugin;
 	@Getter
 	Logger log;
-	//	@Getter
-//	private SimpleConfig cfg;
 	@Getter
 	private Yaml cfg;
 	@Getter
@@ -74,31 +72,22 @@ public class Breedable extends JavaPlugin {
 	}
 
 	private void setupConfig () throws InvalidMaterialException {
-		cfg = new Yaml("settings.yml", getDataFolder().toString(), getResource("settings.yml"));
+		cfg = new Yaml("config.yml", getDataFolder().toString(), getResource("config.yml"));
 		String[] header = {"Config file for BreedablePets",
 				"by Magnum1997",
 				"This should be self-explanatory. I tried to comment settings.",
 				"For problems, questions, or feedback please visit",
 				"https://github.com/Magnum97/BreedablePetsMC/issues"};
 		cfg.framedHeader(header);
-		// Set defaults
-		cfg.setDefault("parrot.egg-lay.base-chance", 50);
-		cfg.setDefault("parrot.egg-lay.mated-chance", 80);
-		cfg.setDefault("parrot.hatch.normal-egg", 10);
-		cfg.setDefault("parrot.hatch.fertile-egg", 95);
-		cfg.setDefault("parrot.hatch.same-color", true);
-		cfg.setDefault("parrot.hatch.color", Parrot.Variant.RED);
-		cfg.write();
 		boolean valid;
 		valid = materialsAreValid();
 		if (! valid) {
-			log.warning("Invalid materials in settings.yml");
+			log.warning("Invalid materials in config.yml");
 			log.severe("Valid Material names can be found at " +
 					"https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html");
 			log.severe("Plugin is disabled");
 			plugin.setEnabled(false);
 		}
-//		cfg.setDefault("parrot.rare-chance", 1); // Unused currently - plan to allow rare colors.
 	}
 
 	private boolean materialsAreValid () throws InvalidMaterialException {
@@ -108,12 +97,11 @@ public class Breedable extends JavaPlugin {
 
 		for (String material : section.keySet()) {
 			log.info("Setting " + material + " modifier to " + section.getInt(material));
-//			log.info("Found " + material + " in settings.yml");
 			try {
 				Material.valueOf(material);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidMaterialException(material, "Invalid Material in settings.yml", e);
+				throw new InvalidMaterialException(material, "Invalid Material in config.yml", e);
 			}
 		}
 		isValid = true;
