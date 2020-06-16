@@ -46,7 +46,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 public class BreedListener implements Listener {
 
@@ -97,14 +96,6 @@ public class BreedListener implements Listener {
 		int matedChance = Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.mated-chance");
 		int finalChance = baseChance + chanceModifier;
 
-		////////////////////////  DEBUG CODE ////////////////////////////
-		Logger log = plugin.getLogger();
-		log.info("Base chance of egg : " + baseChance);
-		log.info("Food modifier      : " + chanceModifier);
-		log.info("Final chance       : " + finalChance);
-		log.info("Fertile chance     : " + matedChance);
-		/////////////////////////////////////////////////////////////////
-
 		List <Entity> nearby = target.getNearbyEntities(5, 2, 5);
 
 		World w = player.getWorld();
@@ -120,7 +111,7 @@ public class BreedListener implements Listener {
 						(! onCoolDown.contains(thisMate.getUniqueId()))) {
 					hasMate = true;
 					mate = entity;
-				doCoolDown(mate.getUniqueId());
+					doCoolDown(mate.getUniqueId());
 					break;
 				}
 			}
@@ -159,7 +150,6 @@ public class BreedListener implements Listener {
 		else {
 			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.base-chance")) {
 				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3, x, y, z);
-				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());
 			}
 		}
@@ -175,30 +165,6 @@ public class BreedListener implements Listener {
 			}
 		};
 		cooldown.runTaskLater(plugin, 20 * Breedable.getPlugin().getCfg().getOrSetDefault("cooldown.parrot", 15));
-	}
-
-	// TODO get length of configuration section and make array of item/chance pairs.
-	private Integer foodCalc (Entity target, Material type) {
-		int chance = 0;
-		switch (type) {
-			case WHEAT_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.wheat");
-				break;
-			case BEETROOT_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.beetroot");
-				break;
-			case PUMPKIN_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.pumpkin");
-				break;
-			case MELON_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.melon");
-				break;
-			case GLISTERING_MELON_SLICE:
-				_MELON:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.glistering");
-				break;
-		}
-		return chance;
 	}
 }
 

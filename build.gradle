@@ -13,7 +13,7 @@ plugins {
 }
 
 group = 'me.magnum' // Put your groupId here
-version = '2.0.0-SNAPSHOT' // Put your version here
+version = '2.2.1' // Put your version here
 archivesBaseName = 'BreedablePets' // Put your artifactId here
 mainClassName = 'me.magnum.Breedable'
 targetCompatibility = 1.8
@@ -32,7 +32,6 @@ repositories {
 dependencies {
     compileOnly spigot('1.15.2')
     implementation 'fr.mrmicky:FastParticles:1.2.0'
-//    implementation  files ('/home/rich/.m2/repository/com/github/javafactorydev/lightningstorage/3.1.1-SNAPSHOT/lightningstorage-3.1.1-SNAPSHOT.jar')
     implementation 'com.github.Magnum97:LightningStorage:frame-header-SNAPSHOT'
 //    implementation  'com.github.JavaFactoryDev:LightningStorage:3.1.1-SNAPSHOT'
     implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
