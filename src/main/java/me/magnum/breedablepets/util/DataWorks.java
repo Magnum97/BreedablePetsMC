@@ -22,7 +22,7 @@ public class DataWorks {
 				map.put(mat, value);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidMaterialException(material, "Invalid Material in settings.yml", e);
+				throw new InvalidMaterialException(material, "Invalid Material in config.yml", e);
 			}
 		}
 		return map;
