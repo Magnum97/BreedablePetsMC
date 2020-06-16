@@ -27,12 +27,13 @@ jobs:
       - name: Gradle build task
         run: ./gradlew jar
 
-      - name: Generate changelog
-        id: change_log
+      - name: Conventional Changelog Action
+        id: changelog
         uses: TriPSs/conventional-changelog-action@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          output-file: false
+          github-token: ${{ secrets.github_token }}
+          output-file: 'false'
+          skip-on-empty: 'true'
 
       - name: Create release, update, and upload assets
         uses: meeDamian/github-release@v2.0.1
@@ -43,16 +44,7 @@ jobs:
           draft: true
           allow_override: true
           body: |
-            Changelog for ${{ steps.get_version.outputs.VERSION }} :
-            * Change Materials to match Minecraft 1.15
-            * Add Cooldown feature
-            * Make materials for breeding configurable
-            * Integrated code from local API
-            * Add workflows for issue and release creation.
-            * Refactored main class
-            * Change how plugin watches for eggs to hatch
-            * Change ProjectileHitEvent: getBlock location -> getEnttity location
-            * Changed Config library to Lightning Storage
-            ${{ steps.change_log.outputs.clean_changelog }}
+            ## Changelog for ${{ steps.changelog.outputs.tag }}:
+            ${{ steps.changelog.outputs.clean_changelog }}
           files: build/libs/*
           gzip: folders
