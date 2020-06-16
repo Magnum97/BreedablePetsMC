@@ -1,14 +1,13 @@
-# Changelog
-
-[Full Changelog](http://link.to/commit/history)
-
-### v1.2.3 (*Unreleased*)
+## [2.2.2](https://github.com/Magnum97/BreedablePetsMC/compare/v2.0.0...v2.2.2) (2020-06-16)
 
 
-* Change Materials to work with Minecraft 1.15
-* Change how plugin listens for eggs to hatch
-* Change hatch location to prevent suffocation
-* Add a changelog
+### Reverts
+
+* Revert "Build dev branch on push" ([a5f01cf](https://github.com/Magnum97/BreedablePetsMC/commit/a5f01cfc83f05c019e233d2d90a262b19bff25ed))
+
+
+
+# [2.0.0-PRE](https://github.com/Magnum97/BreedablePetsMC/compare/v1.3.1...v2.0.0-PRE) (2020-05-22)
 
 
 
