@@ -10,15 +10,15 @@ on:
 jobs:
   generate_changelog:
     runs-on: ubuntu-latest
-
+    steps:
       - name: Conventional Changelog Action
         uses: TriPSs/conventional-changelog-action@v2.4.0
         with:
           # Github token
-          github-token:
+          github-token: ${{ secrets.github_token }}
           # Commit message to use
           git-message: Update changelog {version}
           # Number of releases to preserve in changelog
-          release-count: # optional, default is 5
+          release-count: 5 # optional, default is 5
           # The path to the package.json to use
-          package-json: # optional, default is ./package.json
+          package-json: ./package.json 
