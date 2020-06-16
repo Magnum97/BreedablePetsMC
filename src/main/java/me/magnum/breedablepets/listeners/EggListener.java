@@ -54,7 +54,7 @@ public class EggListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGH)
 	public void onEggThrow (PlayerEggThrowEvent e) {
 		ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
-		if (! (hand.isSimilar(itemsAPI.regEgg) || hand.isSimilar(itemsAPI.fertileEgg)) )
+		if (! (hand.isSimilar(itemsAPI.regEgg) || hand.isSimilar(itemsAPI.fertileEgg)))
 			return;
 
 		UUID eggId = e.getEgg().getUniqueId();
@@ -95,20 +95,19 @@ public class EggListener implements Listener {
 
 	@EventHandler
 	public void onDispenseEgg (BlockDispenseEvent e) {
-		// TODO add config option here
-		if ((e.getItem() != null) && (e.getItem().getType() != Material.AIR)) {
-			if (e.getItem().getType() == Material.EGG) {
-				Dispenser dispenser = (Dispenser) e.getBlock().getState();
-				if (dispenser.getInventory().contains(Material.EGG)) {
-					ItemStack before;
-					int amount;
-					int slot;
-					slot = dispenser.getInventory().first(Material.EGG);
-					before = dispenser.getInventory().getItem(slot);
-					amount = before.getAmount();
-					before.setAmount(amount - 1);
-					e.setCancelled(true);
-				}
+		if (Breedable.getPlugin().getCfg().getOrSetDefault("dispense-eggs", false))
+			return;
+		if (e.getItem().getType() == Material.EGG) {
+			Dispenser dispenser = (Dispenser) e.getBlock().getState();
+			if (dispenser.getInventory().contains(Material.EGG)) {
+				ItemStack before;
+				int amount;
+				int slot;
+				slot = dispenser.getInventory().first(Material.EGG);
+				before = dispenser.getInventory().getItem(slot);
+				amount = before.getAmount();
+				before.setAmount(amount - 1);
+				e.setCancelled(true);
 			}
 		}
 	}
