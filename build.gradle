@@ -38,7 +38,7 @@ dependencies {
 //    implementation 'com.github.kangarko:Foundation:5.3.8@jar' // Kangerko's Foundation library
 
 }
-defaultTasks 'clean', 'build'
+defaultTasks 'clean', 'shadowJar'
 compileJava {
     options.compilerArgs += ["-parameters"]
     options.fork = true
