@@ -27,7 +27,10 @@ parrot:
 
 # Minimum time until next breeding attempt in seconds
 cooldown:
-  parrot: 15
+  parrot: 300
 
 # Allow dispenser to eject / spawn from eggs
-dispense-eggs: false
+# This does not affect Spawn Eggs - only parrot and chicken laid eggs.
+dispenser:
+  parrot-egg: false
+  chicken-egg: false

@@ -95,20 +95,29 @@ public class EggListener implements Listener {
 
 	@EventHandler
 	public void onDispenseEgg (BlockDispenseEvent e) {
-		if (Breedable.getPlugin().getCfg().getOrSetDefault("dispense-eggs", false))
-			return;
+		boolean parrot;
+		boolean chicken;
+		parrot = Breedable.getPlugin().getCfg().getOrSetDefault("dispenser.parrot-egg", false);
+		chicken = Breedable.getPlugin().getCfg().getOrSetDefault("dispenser.chicken-egg", false);
+
 		if (e.getItem().getType() == Material.EGG) {
-			Dispenser dispenser = (Dispenser) e.getBlock().getState();
-			if (dispenser.getInventory().contains(Material.EGG)) {
-				ItemStack before;
-				int amount;
-				int slot;
-				slot = dispenser.getInventory().first(Material.EGG);
-				before = dispenser.getInventory().getItem(slot);
-				amount = before.getAmount();
-				before.setAmount(amount - 1);
-				e.setCancelled(true);
-			}
+			if (! e.getItem().hasItemMeta() && ! chicken)
+				stopEgg(e);
+			else if (e.getItem().hasItemMeta() && ! parrot)
+				stopEgg(e);
 		}
 	}
+
+	private void stopEgg (BlockDispenseEvent e) {
+		Dispenser dispenser = (Dispenser) e.getBlock().getState();
+		ItemStack before;
+		int amount;
+		int slot;
+		slot = dispenser.getInventory().first(Material.EGG);
+		before = dispenser.getInventory().getItem(slot);
+		amount = before.getAmount();
+		before.setAmount(amount - 1);
+		e.setCancelled(true);
+	}
+
 }
