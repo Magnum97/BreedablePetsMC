@@ -11,6 +11,7 @@ jobs:
   generate_changelog:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Conventional Changelog Action
         uses: TriPSs/conventional-changelog-action@v2.4.0
         with:
