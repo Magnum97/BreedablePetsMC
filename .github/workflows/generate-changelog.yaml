@@ -1,0 +1,23 @@
+name: Changelog
+on:
+  pull_request:
+    types: [closed]
+  release:
+    types: [published]
+  issues:
+    types: [closed, edited]
+
+jobs:
+  generate_changelog:
+    runs-on: ubuntu-latest
+    name: Generate changelog for master branch
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Generate CHANGELOG.md
+        id: change_log
+        uses: TriPSs/conventional-changelog-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-message: Update Changelog {version}
+

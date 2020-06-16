@@ -25,9 +25,13 @@
  */
 package me.magnum.breedablepets.listeners;
 
+import de.leonhard.storage.Yaml;
 import fr.mrmicky.fastparticle.FastParticle;
 import fr.mrmicky.fastparticle.ParticleType;
+import lombok.SneakyThrows;
 import me.magnum.Breedable;
+import me.magnum.breedablepets.util.Common;
+import me.magnum.breedablepets.util.DataWorks;
 import me.magnum.breedablepets.util.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,25 +42,37 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BreedListener implements Listener {
 
 	private final ItemUtil items = new ItemUtil();
-	//	private final SimpleConfig cfg = Main.getCfg();
+	private final Breedable plugin = Breedable.getPlugin();
+	private final Yaml cfg = plugin.getCfg();
+	private final String pre = plugin.getPre();
+	private final HashSet <UUID> onCoolDown = new HashSet <>();
 
 	public BreedListener () {
 	}
 
+	@SneakyThrows
 	@EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onFeed (PlayerInteractEntityEvent pie) {
 		Player player = pie.getPlayer();
 		Entity target = pie.getRightClicked();
 		Material hand = player.getInventory().getItemInMainHand().getType();
+		HashMap <Material, Integer> map;
+		DataWorks dataWorks = new DataWorks();
+		map = dataWorks.getMaterialsMap();
 		if (target.getType() != EntityType.PARROT) {
+			return;
+		}
+		if (onCoolDown.contains(target.getUniqueId())) {
+			Common.tell(player, pre + "This parrot needs rest before it can lay another egg.");
+			pie.setCancelled(true);
 			return;
 		}
 		Tameable tamed = (Tameable) target;
@@ -68,21 +84,17 @@ public class BreedListener implements Listener {
 		if (pie.getHand() != EquipmentSlot.HAND) {
 			return;
 		}
-		if (Arrays.asList(Material.BEETROOT_SEEDS,
-				Material.MELON_SEEDS,
-				Material.MELON,
-				Material.PUMPKIN_SEEDS,
-				Material.GLISTERING_MELON_SLICE).contains(hand)) {
-			chanceModifier = foodCalc(target, hand); // TODO increase chance of egg/fertile egg by type of food.
+		if (map.containsKey(hand)) {
+			chanceModifier = map.get(hand);
 		}
-		else {
+		else
 			return;
-		}
 		pie.setCancelled(true);
 		sitting.setSitting(true);
 		player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-
-		// Common.tell(player, "Base chance of egg: " + chanceModifier); // TODO remove before deploy
+		int baseChance = Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.base-chance");
+		int matedChance = Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.mated-chance");
+		int finalChance = baseChance + chanceModifier;
 
 		List <Entity> nearby = target.getNearbyEntities(5, 2, 5);
 
@@ -93,36 +105,39 @@ public class BreedListener implements Listener {
 
 		for (Entity entity : nearby) {
 			if (entity.getType() == target.getType()) {
-				hasMate = true;
-				mate = entity;
+				Tameable thisMate = (Tameable) entity;
+				if ((thisMate.isTamed()) &&
+						(Objects.equals(thisMate.getOwner(), (tamed.getOwner()))) &&
+						(! onCoolDown.contains(thisMate.getUniqueId()))) {
+					hasMate = true;
+					mate = entity;
+					doCoolDown(mate.getUniqueId());
+					break;
+				}
 			}
 		}
-		
-/* // TODO find nearest parrot
-		for (int i = 0; i < nearby.size(); i++) {
-			if (nearby.get(i).getType().equals(EntityType.PARROT)){
-				hasMate=true;
-				mate=nearby.get(i);
-				break;
-			}
-		}
-*/
-
-		// int random = new Random().nextInt(100);
 		double x = target.getLocation().getX();
 		double y = target.getLocation().getY() + 1;
 		double z = target.getLocation().getZ();
+		doCoolDown(target.getUniqueId());
+		int random = ThreadLocalRandom.current().nextInt(100);
 		if (hasMate) {
-			if (ThreadLocalRandom.current().nextInt(100) < (Breedable.getPlugin().getCfg().getInt("fertile-egg-chance"))) {
-				w.dropItemNaturally(loc, items.regEgg.clone());
-				// w.dropItemNaturally(loc, items.fertileEgg.clone());  // TODO To be fertile egg - disabled until single throw bug fixed
+			if (random < matedChance + chanceModifier) {
+				int r2 = ThreadLocalRandom.current().nextInt(100);
+				boolean fertile = r2 < Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.fertile-chance:");
+
+				if (fertile)
+					w.dropItemNaturally(loc, items.fertileEgg.clone());
+				else
+					w.dropItemNaturally(loc, items.regEgg.clone());
+
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 				FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
 				FastParticle.spawnParticle(w, ParticleType.HEART, mate.getLocation(), 3);
 				FastParticle.spawnParticle(w, ParticleType.HEART, x, y, z, 3);
 			}
 			else {
-				if (ThreadLocalRandom.current().nextInt(1, 101) < Breedable.getPlugin().getCfg().getInt("egg-chance")) {
+				if (random < finalChance) {
 					w.dropItemNaturally(loc, items.regEgg.clone());
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, target.getLocation(), 3);
 					FastParticle.spawnParticle(target.getWorld(), ParticleType.HEART, x, y, z, 3);
@@ -133,37 +148,23 @@ public class BreedListener implements Listener {
 
 		}
 		else {
-			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getPlugin().getCfg().getInt("egg-change")) {
+			if (ThreadLocalRandom.current().nextInt(100) < Breedable.getPlugin().getCfg().getInt("parrot.egg-lay.base-chance")) {
 				FastParticle.spawnParticle(w, ParticleType.NOTE, target.getLocation(), 3, x, y, z);
-				// FastParticle.spawnParticle(w, ParticleType.NOTE, x, y, z, 1);
 				w.dropItemNaturally(loc, items.regEgg.clone());
 			}
 		}
 
 	}
 
-	// TODO get length of configuration section and make array of item/chance pairs.
-	private Integer foodCalc (Entity target, Material type) {
-		int chance = 0;
-		switch (type) {
-			case WHEAT_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.wheat");
-				break;
-			case BEETROOT_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.beetroot");
-				break;
-			case PUMPKIN_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.pumpkin");
-				break;
-			case MELON_SEEDS:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.melon");
-				break;
-			case GLISTERING_MELON_SLICE:
-				_MELON:
-				chance = Breedable.getPlugin().getCfg().getInt("modifier.glistering");
-				break;
-		}
-		return chance;
+	private void doCoolDown (UUID uniqueId) {
+		onCoolDown.add(uniqueId);
+		BukkitRunnable cooldown = new BukkitRunnable() {
+			@Override
+			public void run () {
+				onCoolDown.remove(uniqueId);
+			}
+		};
+		cooldown.runTaskLater(plugin, 20 * Breedable.getPlugin().getCfg().getOrSetDefault("cooldown.parrot", 15));
 	}
 }
 
