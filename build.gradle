@@ -12,8 +12,12 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
+import groovy.json.JsonSlurper
+def packageSlurper = new JsonSlurper()
+def packageJson = packageSlurper.parse file('package.json')
+
 group = 'me.magnum' // Put your groupId here
-version = '2.2.1' // Put your version here
+version = packageJson.version
 archivesBaseName = 'BreedablePets' // Put your artifactId here
 mainClassName = 'me.magnum.Breedable'
 targetCompatibility = 1.8
