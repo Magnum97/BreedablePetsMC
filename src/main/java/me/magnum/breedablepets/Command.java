@@ -55,7 +55,7 @@ public class Command extends BaseCommand {
 		if (! CheckSender.isPlayer(sender)) {
 			return;
 		}
-		if ((fertile.equalsIgnoreCase("fertile"))&& sender.hasPermission("breedable.parrot.fertile")) {
+		if ((fertile.equalsIgnoreCase("fertile"))&& sender.hasPermission("breedablepets.parrot.fertile")) {
 			p.getInventory().addItem(util.fertileEgg);
 			return;
 		}

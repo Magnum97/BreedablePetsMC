@@ -77,10 +77,32 @@ spigot {
             description = 'Allows main command'
             defaults = 'op'
         }
+        'breedablepets.command.parrot' {
+            description = 'Get a parrot egg'
+            defaults = 'op'
+        }
+        'breedablepets.command.parrot.fertile' {
+            description = 'Get a fertile parrot egg'
+            defaults = 'op'
+        }
+        'breedablepets.command.reload' {
+            description = 'Reload config file'
+            defaults = 'op'
+        }
+        'breedablepets.command.*' {
+            description = 'Permission for all commands'
+            defaults = 'op'
+            children = ['breedablepets.command.parrot'        : true,
+                        'breedablepets.command.parrot.fertile': true,
+                        'breedablepets.command.reload'        : true]
+        }
         'breedablepets.*' {
             description = 'Wildcard permission'
             defaults = 'op'
-            children = ['breedablepets.command': true, 'breedablepets.command.parrot': true, 'breedabpepets.reload': true]
+            children = ['breedablepets.command'               : true,
+                        'breedablepets.command.parrot'        : true,
+                        'breedablepets.command.parrot.fertile': true,
+                        'breedabpepets.command.reload'        : true]
         }
     }
 }
