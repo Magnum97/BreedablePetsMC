@@ -63,7 +63,7 @@ public class Command extends BaseCommand {
 	}
 	
 	@Subcommand("reload")
-	@CommandPermission("breedable.reload")
+	@CommandPermission("breedablepets.command.reload")
 	public void onReload (CommandSender sender) {
 		Breedable.getPlugin().getCfg().forceReload();
 	}

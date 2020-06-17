@@ -1,5 +1,7 @@
 // Configure Auto Relocation
+
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+import groovy.json.JsonSlurper
 
 // We use this to replace version in plugin.yml
 // import org.apache.tools.ant.filters.ReplaceTokens
@@ -12,7 +14,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
-import groovy.json.JsonSlurper
 def packageSlurper = new JsonSlurper()
 def packageJson = packageSlurper.parse file('package.json')
 
