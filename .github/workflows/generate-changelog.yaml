@@ -1,5 +1,8 @@
 name: Changelog
 on:
+  push:
+    branches:
+      - 'changelog'
   pull_request:
     types: [closed]
   release:
@@ -10,16 +13,28 @@ on:
 jobs:
   generate_changelog:
     runs-on: ubuntu-latest
+    name: Generate changelog for master branch
     steps:
-      - uses: actions/checkout@v2
-      - name: Conventional Changelog Action
-        uses: TriPSs/conventional-changelog-action@v2.4.0
+      - uses: actions/checkout@v1
+
+      - name: Generate changelog
+        uses: charmixer/auto-changelog-action@v1
         with:
-          # Github token
-          github-token: ${{ secrets.github_token }}
-          # Commit message to use
-          git-message: Update changelog {version}
-          # Number of releases to preserve in changelog
-          release-count: 5 # optional, default is 5
-          # The path to the package.json to use
-          package-json: ./package.json 
+          token: ${{ secrets.YOUR_GITHUB_TOKEN or GITHUB_TOKEN }}
+
+      - name: Commit files
+        env:
+          CI_USER: ${{ secrets.YOUR_GITHUB_USER }}
+          CI_EMAIL: ${{ secrets.YOUR_GITHUB_EMAIL }}
+        run: |
+          git config --local user.email "$CI_EMAIL"
+          git config --local user.name "$CI_USER"
+          git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && echo ::set-env name=push::1 || echo "No changes to CHANGELOG.md"
+
+      - name: Push changes
+        if: env.push == 1
+        env:
+          CI_USER: ${{ secrets.YOUR_GITHUB_USER }}
+          CI_TOKEN: ${{ secrets.YOUR_GITHUB_TOKEN or GITHUB_TOKEN }}
+        run: |
+          git push "https://$CI_USER:$CI_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:master
