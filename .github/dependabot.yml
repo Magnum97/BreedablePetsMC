@@ -4,7 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-  reviewers:
-  - "Magnum97"
-  target-branch:
-    - develop
+    reviewers:
+    - "Magnum97"
+target-branch:
+- develop
