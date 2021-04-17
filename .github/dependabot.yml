@@ -1,10 +1,9 @@
+# Specify location of manifest files for each package manager
+
 version: 2
 updates:
-  - package-ecosystem: gradle
+  - package-ecosystem: "gradle"
+    # Files stored in repository root
     directory: "/"
     schedule:
-      interval: daily
-    reviewers:
-    - "Magnum97"
-target-branch:
-- develop
+      interval: "daily"
