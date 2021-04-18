@@ -9,5 +9,3 @@ updates:
       interval: "daily"
     default_reviewers:
       - "Magnum97"
-    default_branch:
-      - "develop"
