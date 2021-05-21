@@ -35,7 +35,7 @@ repositories {
 
 dependencies {
     compileOnly spigot('1.15.2')
-    implementation 'fr.mrmicky:FastParticles:1.2.0'
+    implementation 'fr.mrmicky:FastParticles:1.2.4'
     implementation 'com.github.Magnum97:LightningStorage:frame-header-SNAPSHOT'
 //    implementation  'com.github.JavaFactoryDev:LightningStorage:3.1.1-SNAPSHOT'
     implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
