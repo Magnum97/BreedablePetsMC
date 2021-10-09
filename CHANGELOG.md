@@ -1,3 +1,7 @@
+## [2.2.13](https://github.com/Magnum97/BreedablePetsMC/compare/v2.2.12...v2.2.13) (2021-10-09)
+
+
+
 ## [2.2.12](https://github.com/Magnum97/BreedablePetsMC/compare/v2.2.11...v2.2.12) (2021-05-12)
 
 
@@ -11,10 +15,6 @@
 
 
 ## [2.2.9](https://github.com/Magnum97/BreedablePetsMC/compare/v2.2.8...v2.2.9) (2021-04-18)
-
-
-
-## [2.2.8](https://github.com/Magnum97/BreedablePetsMC/compare/v2.2.7...v2.2.8) (2021-04-17)
 
 
 
