@@ -7,7 +7,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocatio
 plugins {
     id 'java'
     id 'application'
-    id 'kr.entree.spigradle' version '2.2.3'
+    id 'kr.entree.spigradle' version '2.4.1'
     id "io.freefair.lombok" version "6.0.0-m2"
     id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
