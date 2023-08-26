@@ -38,7 +38,7 @@ dependencies {
     implementation 'fr.mrmicky:FastParticles:1.2.0'
     implementation 'com.github.Magnum97:LightningStorage:3.2.2'
 //    implementation  'com.github.JavaFactoryDev:LightningStorage:3.1.1-SNAPSHOT'
-    implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
+    implementation "co.aikar:acf-bukkit:0.5.1-SNAPSHOT"
 //    implementation 'com.github.kangarko:Foundation:5.3.8@jar' // Kangerko's Foundation library
 
 }
